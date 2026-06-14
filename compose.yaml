@@ -1,0 +1,18 @@
+services:
+  postgres:
+    image: 'postgres:latest'
+    container_name: 'monote_postgres'
+    environment:
+      - 'POSTGRES_DB=monote_postgres'
+      - 'POSTGRES_PASSWORD=monote'
+      - 'POSTGRES_USER=monote'
+      - 'TZ=Asia/Ho_Chi_Minh'
+    ports:
+      - '5433:5432'
+  redis:
+    image: 'redis:latest'
+    container_name: 'monote_redis'
+    environment:
+      - 'TZ=Asia/Ho_Chi_Minh'
+    ports:
+      - '6379'
