@@ -1,5 +1,7 @@
 # MONOTE BE
 > Repository for Monote server application
+>
+> [`FE repo`](https://github.com/yozakura-minato/monote-fe) [`Task board`](https://github.com/users/yozakura-minato/projects/4)
 
 **Monote** is a web application for users to plan and track their personal expenses.
 The main goal is to help user take full control of their financial health and achieve their savings goals.
