@@ -1,19 +1,30 @@
 spring:
+
   application:
     name: monoteBe
+
   jackson:
     time-zone: Asia/Ho_Chi_Minh
+
   jpa:
     properties:
       hibernate:
+        ddl-auto: validate
         jdbc:
           time_zone: Asia/Ho_Chi_Minh
         format_sql: true
     show-sql: true
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
   datasource:
     url: jdbc:postgresql://localhost:5433/monote_postgres
     username: monote
     password: monote
+
   data:
     redis:
       host: localhost
