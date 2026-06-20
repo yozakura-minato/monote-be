@@ -3,15 +3,10 @@ spring:
   application:
     name: monoteBe
 
-  jackson:
-    time-zone: Asia/Ho_Chi_Minh
-
   jpa:
     properties:
       hibernate:
         ddl-auto: validate
-        jdbc:
-          time_zone: Asia/Ho_Chi_Minh
         format_sql: true
     show-sql: true
 
