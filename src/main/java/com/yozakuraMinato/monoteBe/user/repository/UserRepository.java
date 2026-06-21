@@ -1,0 +1,14 @@
+package com.yozakuraMinato.monoteBe.user.repository;
+
+import com.yozakuraMinato.monoteBe.user.model.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.UUID;
+
+@Repository
+public interface UserRepository extends JpaRepository<User, UUID> {
+
+    boolean existsByEmailAndDeletedAtIsNull(String email);
+
+}
