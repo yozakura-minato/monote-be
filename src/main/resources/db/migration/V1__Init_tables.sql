@@ -1,5 +1,5 @@
 create table users(
-	id uuid primary key default gen_random_uuid(),
+	id uuid primary key,
 
 	email varchar(255) not null,
 	google_id varchar(255),						
@@ -31,7 +31,7 @@ create unique index idx_unique_user_google_id
 ------------------------------------------------------------------------------------------------------------------------
 
 create table accounts(
-    id bigint primary key generated always as identity,
+    id bigint primary key,
     user_id uuid not null,						
 
     name varchar(100) not null,					
@@ -62,7 +62,7 @@ create unique index idx_unique_account_name
 ------------------------------------------------------------------------------------------------------------------------
 
 create table categories(
-    id bigint primary key generated always as identity,
+    id bigint primary key,
     user_id uuid not null,						
 
     name varchar(100) not null,					
@@ -91,7 +91,7 @@ create unique index idx_unique_category_name
 ------------------------------------------------------------------------------------------------------------------------
 
 create table tracking_periods(
-    id bigint primary key generated always as identity,
+    id bigint primary key,
     user_id uuid not null,
     source_account bigint,
 	auto_fill_destination_account bigint,
@@ -132,7 +132,7 @@ create unique index idx_unique_budget_name_and_type
 ------------------------------------------------------------------------------------------------------------------------
 
 create table allocations(
-	id bigint primary key generated always as identity,
+	id bigint primary key,
 	user_id uuid not null,
     period_id bigint not null,
     account_id bigint not null,
@@ -174,7 +174,7 @@ create unique index idx_unique_category_allocation_category_id
 ------------------------------------------------------------------------------------------------------------------------
 
 create table transactions(
-	id uuid primary key default gen_random_uuid(),
+	id uuid primary key,
     user_id uuid not null,
     source_account_id bigint,
     destination_account_id bigint,

@@ -32,3 +32,7 @@ logging:
         orm:
           jdbc:
             bind: trace
+
+security:
+  public-path: "/sign-up,/sign-in,/reset-password"
+  encoder-strength: 12
