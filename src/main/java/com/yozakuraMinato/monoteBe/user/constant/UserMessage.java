@@ -7,13 +7,14 @@ public class UserMessage {
     private static final String password = "user.password.";
 
     public class Id {
-        public static final String notFound = password + "notFound";
+        public static final String notFound = id + "notFound";
     }
 
     public class Email {
         public static final String isNull = email+ "isNull";
         public static final String isInvalid = email + "isInvalid";
         public static final String alreadyExists = email + "alreadyExists";
+        public static final String notFound = email + "notFound";
     }
 
     public class Password {

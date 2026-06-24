@@ -1,5 +1,6 @@
 package com.yozakuraMinato.monoteBe.user.model.entity;
 
+import com.yozakuraMinato.monoteBe.user.model.projection.UserPrincipalProjection;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -7,13 +8,18 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.UUID;
 
 public class UserPrincipal implements UserDetails {
 
-    private User user;
+    private UserPrincipalProjection userPrincipalProjection;
 
-    public UserPrincipal(User user) {
-        this.user = user;
+    public UUID getId() {
+        return userPrincipalProjection.id();
+    }
+
+    public UserPrincipal(UserPrincipalProjection userPrincipalProjection) {
+        this.userPrincipalProjection = userPrincipalProjection;
     }
 
     @Override
@@ -23,12 +29,12 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public @Nullable String getPassword() {
-        return user.getHashedPassword();
+        return userPrincipalProjection.hashedPassword();
     }
 
     @Override
     public String getUsername() {
-        return user.getId().toString();
+        return userPrincipalProjection.email();
     }
 
     @Override

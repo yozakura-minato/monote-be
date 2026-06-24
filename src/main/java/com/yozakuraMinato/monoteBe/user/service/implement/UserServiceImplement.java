@@ -6,29 +6,26 @@ import com.yozakuraMinato.monoteBe.user.constant.type.UserStatus;
 import com.yozakuraMinato.monoteBe.user.model.UserMapper;
 import com.yozakuraMinato.monoteBe.user.model.entity.User;
 import com.yozakuraMinato.monoteBe.user.model.entity.UserPrincipal;
+import com.yozakuraMinato.monoteBe.user.model.requestDto.SignInRequest;
 import com.yozakuraMinato.monoteBe.user.model.requestDto.SignUpRequest;
+import com.yozakuraMinato.monoteBe.user.model.responseDto.SignInResponse;
 import com.yozakuraMinato.monoteBe.user.model.responseDto.SignUpResponse;
 import com.yozakuraMinato.monoteBe.user.repository.UserRepository;
+import com.yozakuraMinato.monoteBe.user.service.JwtService;
 import com.yozakuraMinato.monoteBe.user.service.UserService;
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
-import java.util.UUID;
 
 @Service
-public class UserServiceImplement implements UserService, UserDetailsService {
-
-    @Value("${security.encoder-strength}")
-    private int encoderStrength;
+public class UserServiceImplement implements UserService {
 
     @Autowired
     private UserRepository userRepository;
@@ -36,40 +33,44 @@ public class UserServiceImplement implements UserService, UserDetailsService {
     @Autowired
     private UserMapper userMapper;
 
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-    @PostConstruct
-    void bCryptPasswordEncoder() {
-        bCryptPasswordEncoder = new BCryptPasswordEncoder(encoderStrength);
-    };
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository
-                .findById(UUID.fromString(username))
-                .filter(thisUser ->
-                        UserStatus.ACTIVATE.equals(thisUser.getStatus())
-                        && thisUser.getDeletedAt() == null)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, UserMessage.Id.notFound));
-
-        return new UserPrincipal(user);
-    }
+    @Autowired
+    private JwtService jwtService;
 
     @Override
     public SignUpResponse signUp(SignUpRequest signUpRequest) {
-        boolean isEmailExists = userRepository.existsByEmailAndDeletedAtIsNull(signUpRequest.email());
+        boolean isEmailExists = userRepository.existsByEmail(signUpRequest.email());
         if(isEmailExists) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, UserMessage.Email.alreadyExists);
         }
 
         User newUser = userMapper.requestToEntity(signUpRequest);
-        newUser.setHashedPassword(bCryptPasswordEncoder.encode(signUpRequest.password()));
+        newUser.setHashedPassword(passwordEncoder.encode(signUpRequest.password()));
         newUser.setRole(UserRole.USER);
-        newUser.setStatus(UserStatus.INACTIVE);
+        newUser.setStatus(UserStatus.ACTIVATE);
         newUser.setCreatedAt(Instant.now());
         userRepository.save(newUser);
 
         return userMapper.entityToResponse(newUser);
+    }
+
+    @Override
+    public SignInResponse signIn(SignInRequest signInRequest) {
+
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(signInRequest.email(), signInRequest.password()));
+
+        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+        String accessToken = null;
+        if (userPrincipal != null) {
+            accessToken = jwtService.generateToken(userPrincipal.getUsername());
+        }
+        return new SignInResponse(accessToken, null);
     }
 
 }

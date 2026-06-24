@@ -2,12 +2,10 @@ package com.yozakuraMinato.monoteBe.user.model.entity;
 
 import com.yozakuraMinato.monoteBe.user.constant.type.UserRole;
 import com.yozakuraMinato.monoteBe.user.constant.type.UserStatus;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -16,6 +14,7 @@ import java.util.UUID;
 @Setter
 @Getter
 @Table(name = "users")
+@SQLRestriction("deleted_at IS NULL")
 public class User {
 
     @Id
@@ -26,7 +25,9 @@ public class User {
     private String googleId;
     private String hashedPassword;
     private String displayName;
+    @Enumerated(EnumType.STRING)
     private UserRole role;
+    @Enumerated(EnumType.STRING)
     private UserStatus status;
 
     private Instant createdAt;
