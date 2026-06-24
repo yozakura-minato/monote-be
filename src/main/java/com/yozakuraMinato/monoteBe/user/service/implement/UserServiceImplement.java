@@ -49,14 +49,14 @@ public class UserServiceImplement implements UserService {
             throw new ResponseStatusException(HttpStatus.CONFLICT, UserMessage.Email.alreadyExists);
         }
 
-        User newUser = userMapper.requestToEntity(signUpRequest);
+        User newUser = userMapper.signUpRequestToEntity(signUpRequest);
         newUser.setHashedPassword(passwordEncoder.encode(signUpRequest.password()));
         newUser.setRole(UserRole.USER);
         newUser.setStatus(UserStatus.ACTIVATE);
         newUser.setCreatedAt(Instant.now());
         userRepository.save(newUser);
 
-        return userMapper.entityToResponse(newUser);
+        return userMapper.entityToSignUpResponse(newUser);
     }
 
     @Override
