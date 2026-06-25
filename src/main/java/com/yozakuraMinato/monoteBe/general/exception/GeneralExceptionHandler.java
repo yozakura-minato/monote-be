@@ -1,5 +1,6 @@
 package com.yozakuraMinato.monoteBe.general.exception;
 
+import com.yozakuraMinato.monoteBe.general.model.ResponseBody;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,56 +18,56 @@ import java.util.List;
 public class GeneralExceptionHandler {
 
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<String> handleAccessDeniedException(AccessDeniedException accessDeniedException) {
+    public ResponseEntity<ResponseBody<?>> handleAccessDeniedException(AccessDeniedException accessDeniedException) {
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
-                .body(GeneralMessage.accessDeniedException);
+                .body(ResponseBody.error(GeneralMessage.accessDeniedException));
     }
 
     @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<String> handleBadCredentialsException(BadCredentialsException badCredentialsException) {
+    public ResponseEntity<ResponseBody<?>> handleBadCredentialsException(BadCredentialsException badCredentialsException) {
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
-                .body(GeneralMessage.badCredentialsException);
+                .body(ResponseBody.error(GeneralMessage.badCredentialsException));
     }
 
     @ExceptionHandler(value = DataIntegrityViolationException.class)
-    public ResponseEntity<String> handleDataIntegrityViolationException(DataIntegrityViolationException dataIntegrityViolationException) {
+    public ResponseEntity<ResponseBody<?>> handleDataIntegrityViolationException(DataIntegrityViolationException dataIntegrityViolationException) {
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
-                .body(GeneralMessage.dataIntegrityViolationException);
+                .body(ResponseBody.error(GeneralMessage.dataIntegrityViolationException));
     }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    public ResponseEntity<String> handleMethodArgumentNotValidException(MethodArgumentNotValidException methodArgumentNotValidException) {
+    public ResponseEntity<ResponseBody<?>> handleMethodArgumentNotValidException(MethodArgumentNotValidException methodArgumentNotValidException) {
         List<FieldError> errors = methodArgumentNotValidException.getFieldErrors();
         if(errors.isEmpty()) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
-                    .body(GeneralMessage.methodArgumentNotValidException);
+                    .body(ResponseBody.error(GeneralMessage.methodArgumentNotValidException));
         }
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(errors.getFirst().getDefaultMessage());
+                .body(ResponseBody.error(errors.getFirst().getDefaultMessage()));
     }
 
     @ExceptionHandler(value = ResponseStatusException.class)
-    public ResponseEntity<String> handleResponseStatusException(ResponseStatusException responseStatusException) {
+    public ResponseEntity<ResponseBody<?>> handleResponseStatusException(ResponseStatusException responseStatusException) {
         if(responseStatusException.getMessage().isBlank()) {
             return ResponseEntity
                     .status(responseStatusException.getStatusCode())
-                    .body(GeneralMessage.responseStatusException);
+                    .body(ResponseBody.error(GeneralMessage.responseStatusException));
         }
         return ResponseEntity
                 .status(responseStatusException.getStatusCode())
-                .body(responseStatusException.getReason());
+                .body(ResponseBody.error(responseStatusException.getReason()));
     }
 
     @ExceptionHandler(value = RuntimeException.class)
-    public ResponseEntity<String> handleRuntimeException(RuntimeException runtimeException) {
+    public ResponseEntity<ResponseBody<?>> handleRuntimeException(RuntimeException runtimeException) {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(GeneralMessage.runtimeException);
+                .body(ResponseBody.error(GeneralMessage.runtimeException));
     }
 
 }

@@ -1,5 +1,6 @@
 package com.yozakuraMinato.monoteBe.user.controller;
 
+import com.yozakuraMinato.monoteBe.general.model.ResponseBody;
 import com.yozakuraMinato.monoteBe.user.model.requestDto.SignInRequest;
 import com.yozakuraMinato.monoteBe.user.model.requestDto.SignUpRequest;
 import com.yozakuraMinato.monoteBe.user.model.responseDto.SignInResponse;
@@ -21,24 +22,26 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/sign-up")
-    public ResponseEntity<SignUpResponse> signUp(@RequestBody @Valid SignUpRequest signUpRequest) {
+    public ResponseEntity<ResponseBody<SignUpResponse>> signUp(@RequestBody @Valid SignUpRequest signUpRequest) {
+        SignUpResponse signUpResponse = userService.signUp(signUpRequest);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(userService.signUp(signUpRequest));
+                .body(ResponseBody.data(signUpResponse));
     }
 
     @PostMapping("/sign-in")
-    public ResponseEntity<SignInResponse> signIn(@RequestBody @Valid SignInRequest signInRequest) {
+    public ResponseEntity<ResponseBody<SignInResponse>> signIn(@RequestBody @Valid SignInRequest signInRequest) {
+        SignInResponse signInResponse = userService.signIn(signInRequest);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(userService.signIn(signInRequest));
+                .body(ResponseBody.data(signInResponse));
     }
 
     @GetMapping("/test")
-    public ResponseEntity<String> test() {
+    public ResponseEntity<ResponseBody<String>> test() {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body("Hello world!");
+                .body(ResponseBody.data("Hello world!"));
     }
 
 }
