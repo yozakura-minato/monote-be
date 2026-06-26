@@ -1,10 +1,10 @@
 package com.yozakuraMinato.monoteBe.user.controller;
 
-import com.yozakuraMinato.monoteBe.general.model.ResponseBody;
-import com.yozakuraMinato.monoteBe.user.model.requestDto.SignInRequest;
-import com.yozakuraMinato.monoteBe.user.model.requestDto.SignUpRequest;
-import com.yozakuraMinato.monoteBe.user.model.responseDto.SignInResponse;
-import com.yozakuraMinato.monoteBe.user.model.responseDto.SignUpResponse;
+import com.yozakuraMinato.monoteBe.common.wrapper.ApplicationResponse;
+import com.yozakuraMinato.monoteBe.user.controller.requestDto.SignInRequest;
+import com.yozakuraMinato.monoteBe.user.controller.requestDto.SignUpRequest;
+import com.yozakuraMinato.monoteBe.user.controller.responseDto.SignInResponse;
+import com.yozakuraMinato.monoteBe.user.controller.responseDto.SignUpResponse;
 import com.yozakuraMinato.monoteBe.user.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,26 +22,26 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/sign-up")
-    public ResponseEntity<ResponseBody<SignUpResponse>> signUp(@RequestBody @Valid SignUpRequest signUpRequest) {
+    public ResponseEntity<ApplicationResponse<SignUpResponse>> signUp(@RequestBody @Valid SignUpRequest signUpRequest) {
         SignUpResponse signUpResponse = userService.signUp(signUpRequest);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(ResponseBody.data(signUpResponse));
+                .body(ApplicationResponse.data(signUpResponse));
     }
 
     @PostMapping("/sign-in")
-    public ResponseEntity<ResponseBody<SignInResponse>> signIn(@RequestBody @Valid SignInRequest signInRequest) {
+    public ResponseEntity<ApplicationResponse<SignInResponse>> signIn(@RequestBody @Valid SignInRequest signInRequest) {
         SignInResponse signInResponse = userService.signIn(signInRequest);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(ResponseBody.data(signInResponse));
+                .body(ApplicationResponse.data(signInResponse));
     }
 
     @GetMapping("/test")
-    public ResponseEntity<ResponseBody<String>> test() {
+    public ResponseEntity<ApplicationResponse<String>> test() {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(ResponseBody.data("Hello world!"));
+                .body(ApplicationResponse.data("Hello world!"));
     }
 
 }

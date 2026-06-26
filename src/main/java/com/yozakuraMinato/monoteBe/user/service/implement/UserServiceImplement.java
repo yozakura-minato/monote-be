@@ -1,17 +1,17 @@
 package com.yozakuraMinato.monoteBe.user.service.implement;
 
-import com.yozakuraMinato.monoteBe.user.constant.UserMessage;
-import com.yozakuraMinato.monoteBe.user.constant.type.UserRole;
-import com.yozakuraMinato.monoteBe.user.constant.type.UserStatus;
-import com.yozakuraMinato.monoteBe.user.model.UserMapper;
-import com.yozakuraMinato.monoteBe.user.model.entity.User;
-import com.yozakuraMinato.monoteBe.user.model.entity.UserPrincipal;
-import com.yozakuraMinato.monoteBe.user.model.requestDto.SignInRequest;
-import com.yozakuraMinato.monoteBe.user.model.requestDto.SignUpRequest;
-import com.yozakuraMinato.monoteBe.user.model.responseDto.SignInResponse;
-import com.yozakuraMinato.monoteBe.user.model.responseDto.SignUpResponse;
+import com.yozakuraMinato.monoteBe.user.shared.UserMessage;
+import com.yozakuraMinato.monoteBe.user.shared.type.UserRole;
+import com.yozakuraMinato.monoteBe.user.shared.type.UserStatus;
+import com.yozakuraMinato.monoteBe.user.shared.UserMapper;
+import com.yozakuraMinato.monoteBe.user.repository.model.User;
+import com.yozakuraMinato.monoteBe.user.repository.model.UserPrincipal;
+import com.yozakuraMinato.monoteBe.user.controller.requestDto.SignInRequest;
+import com.yozakuraMinato.monoteBe.user.controller.requestDto.SignUpRequest;
+import com.yozakuraMinato.monoteBe.user.controller.responseDto.SignInResponse;
+import com.yozakuraMinato.monoteBe.user.controller.responseDto.SignUpResponse;
 import com.yozakuraMinato.monoteBe.user.repository.UserRepository;
-import com.yozakuraMinato.monoteBe.user.service.JwtService;
+import com.yozakuraMinato.monoteBe.user.service.JwtApplicationService;
 import com.yozakuraMinato.monoteBe.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,7 +40,7 @@ public class UserServiceImplement implements UserService {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private JwtService jwtService;
+    private JwtApplicationService jwtService;
 
     @Override
     public SignUpResponse signUp(SignUpRequest signUpRequest) {

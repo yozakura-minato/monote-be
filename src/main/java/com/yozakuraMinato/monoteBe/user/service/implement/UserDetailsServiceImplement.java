@@ -1,9 +1,9 @@
 package com.yozakuraMinato.monoteBe.user.service.implement;
 
-import com.yozakuraMinato.monoteBe.user.constant.UserMessage;
-import com.yozakuraMinato.monoteBe.user.constant.type.UserStatus;
-import com.yozakuraMinato.monoteBe.user.model.entity.UserPrincipal;
-import com.yozakuraMinato.monoteBe.user.model.projection.UserPrincipalProjection;
+import com.yozakuraMinato.monoteBe.user.shared.UserMessage;
+import com.yozakuraMinato.monoteBe.user.shared.type.UserStatus;
+import com.yozakuraMinato.monoteBe.user.repository.model.UserPrincipal;
+import com.yozakuraMinato.monoteBe.user.repository.projection.UserPrincipalProjection;
 import com.yozakuraMinato.monoteBe.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
