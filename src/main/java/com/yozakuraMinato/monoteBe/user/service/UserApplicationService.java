@@ -5,7 +5,7 @@ import com.yozakuraMinato.monoteBe.user.controller.requestDto.SignUpRequest;
 import com.yozakuraMinato.monoteBe.user.controller.responseDto.SignInResponse;
 import com.yozakuraMinato.monoteBe.user.controller.responseDto.SignUpResponse;
 
-public interface UserService {
+public interface UserApplicationService {
 
     SignUpResponse signUp(SignUpRequest signUpRequest);
     SignInResponse signIn(SignInRequest signInRequest);

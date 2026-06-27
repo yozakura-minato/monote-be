@@ -5,7 +5,7 @@ import com.yozakuraMinato.monoteBe.user.controller.requestDto.SignInRequest;
 import com.yozakuraMinato.monoteBe.user.controller.requestDto.SignUpRequest;
 import com.yozakuraMinato.monoteBe.user.controller.responseDto.SignInResponse;
 import com.yozakuraMinato.monoteBe.user.controller.responseDto.SignUpResponse;
-import com.yozakuraMinato.monoteBe.user.service.UserService;
+import com.yozakuraMinato.monoteBe.user.service.UserApplicationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private UserApplicationService userService;
 
     @PostMapping("/sign-up")
     public ResponseEntity<ApplicationResponse<SignUpResponse>> signUp(@RequestBody @Valid SignUpRequest signUpRequest) {

@@ -2,8 +2,8 @@ package com.yozakuraMinato.monoteBe.user.service.implement;
 
 import com.yozakuraMinato.monoteBe.user.shared.UserMessage;
 import com.yozakuraMinato.monoteBe.user.shared.type.UserStatus;
-import com.yozakuraMinato.monoteBe.user.repository.model.UserPrincipal;
-import com.yozakuraMinato.monoteBe.user.repository.projection.UserPrincipalProjection;
+import com.yozakuraMinato.monoteBe.user.repository.model.UserDetailsImplement;
+import com.yozakuraMinato.monoteBe.user.repository.projection.UserDetailsProjection;
 import com.yozakuraMinato.monoteBe.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,11 +19,11 @@ public class UserDetailsServiceImplement implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        UserPrincipalProjection userPrincipalProjection = userRepository
+        UserDetailsProjection userDetailsProjection = userRepository
                 .findByEmailAndStatus(email, UserStatus.ACTIVATE)
                 .orElseThrow(() -> new UsernameNotFoundException(UserMessage.Email.notFound));
 
-        return new UserPrincipal(userPrincipalProjection);
+        return new UserDetailsImplement(userDetailsProjection);
     }
 
 }

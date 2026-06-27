@@ -1,6 +1,7 @@
 package com.yozakuraMinato.monoteBe.user.repository.model;
 
-import com.yozakuraMinato.monoteBe.user.repository.projection.UserPrincipalProjection;
+import com.yozakuraMinato.monoteBe.user.repository.projection.UserDetailsProjection;
+import com.yozakuraMinato.monoteBe.user.shared.type.UserRole;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,31 +11,31 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.UUID;
 
-public class UserPrincipal implements UserDetails {
+public class UserDetailsImplement implements UserDetails {
 
-    private UserPrincipalProjection userPrincipalProjection;
+    private final UserDetailsProjection userDetailsProjection;
 
     public UUID getId() {
-        return userPrincipalProjection.id();
+        return userDetailsProjection.id();
     }
 
-    public UserPrincipal(UserPrincipalProjection userPrincipalProjection) {
-        this.userPrincipalProjection = userPrincipalProjection;
+    public UserDetailsImplement(UserDetailsProjection userDetailsProjection) {
+        this.userDetailsProjection = userDetailsProjection;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority("USER"));
+        return Collections.singleton(new SimpleGrantedAuthority(UserRole.USER.getDescription()));
     }
 
     @Override
     public @Nullable String getPassword() {
-        return userPrincipalProjection.hashedPassword();
+        return userDetailsProjection.hashedPassword();
     }
 
     @Override
     public String getUsername() {
-        return userPrincipalProjection.email();
+        return userDetailsProjection.email();
     }
 
     @Override

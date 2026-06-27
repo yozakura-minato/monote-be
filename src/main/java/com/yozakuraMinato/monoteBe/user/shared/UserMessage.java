@@ -6,6 +6,7 @@ public class UserMessage {
     private static final String id = user + "id.";
     private static final String email = user + "email.";
     private static final String password = user + "password.";
+    private static final String displayName = user + "displayName.";
 
     public class Id {
         public static final String notFound = id + "notFound";
@@ -25,8 +26,8 @@ public class UserMessage {
     }
 
     public class DisplayName {
-        public static final String isNull = password + "isNull";
-        public static final String hasInvalidSize = password + "hasInvalidSize";
+        public static final String isNull = displayName + "isNull";
+        public static final String hasInvalidSize = displayName + "hasInvalidSize";
     }
 
 }

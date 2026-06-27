@@ -5,14 +5,14 @@ import com.yozakuraMinato.monoteBe.user.shared.type.UserRole;
 import com.yozakuraMinato.monoteBe.user.shared.type.UserStatus;
 import com.yozakuraMinato.monoteBe.user.shared.UserMapper;
 import com.yozakuraMinato.monoteBe.user.repository.model.User;
-import com.yozakuraMinato.monoteBe.user.repository.model.UserPrincipal;
+import com.yozakuraMinato.monoteBe.user.repository.model.UserDetailsImplement;
 import com.yozakuraMinato.monoteBe.user.controller.requestDto.SignInRequest;
 import com.yozakuraMinato.monoteBe.user.controller.requestDto.SignUpRequest;
 import com.yozakuraMinato.monoteBe.user.controller.responseDto.SignInResponse;
 import com.yozakuraMinato.monoteBe.user.controller.responseDto.SignUpResponse;
 import com.yozakuraMinato.monoteBe.user.repository.UserRepository;
-import com.yozakuraMinato.monoteBe.user.service.JwtApplicationService;
-import com.yozakuraMinato.monoteBe.user.service.UserService;
+import com.yozakuraMinato.monoteBe.security.service.JwtApiService;
+import com.yozakuraMinato.monoteBe.user.service.UserApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,7 +25,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.Instant;
 
 @Service
-public class UserServiceImplement implements UserService {
+public class UserServiceImplement implements UserApplicationService {
 
     @Autowired
     private UserRepository userRepository;
@@ -40,7 +40,7 @@ public class UserServiceImplement implements UserService {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private JwtApplicationService jwtService;
+    private JwtApiService jwtService;
 
     @Override
     public SignUpResponse signUp(SignUpRequest signUpRequest) {
@@ -65,10 +65,10 @@ public class UserServiceImplement implements UserService {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(signInRequest.email(), signInRequest.password()));
 
-        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+        UserDetailsImplement userDetailsImplement = (UserDetailsImplement) authentication.getPrincipal();
         String accessToken = null;
-        if (userPrincipal != null) {
-            accessToken = jwtService.generateToken(userPrincipal.getUsername());
+        if (userDetailsImplement != null) {
+            accessToken = jwtService.generateToken(userDetailsImplement.getUsername());
         }
         return new SignInResponse(accessToken, null);
     }

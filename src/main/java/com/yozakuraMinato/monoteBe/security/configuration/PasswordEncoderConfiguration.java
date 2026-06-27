@@ -9,7 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class PasswordEncoderConfiguration {
 
-    @Value("${security.encoder-strength}")
+    @Value("${security.password.encoder-strength}")
     private int encoderStrength;
 
     @Bean

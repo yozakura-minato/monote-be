@@ -1,6 +1,6 @@
-package com.yozakuraMinato.monoteBe.security.annotation;
+package com.yozakuraMinato.monoteBe.common.annotation;
 
-import com.yozakuraMinato.monoteBe.security.annotation.validator.PasswordStrengthValidator;
+import com.yozakuraMinato.monoteBe.common.annotation.validator.PasswordStrengthValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 import java.lang.annotation.*;

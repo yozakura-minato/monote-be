@@ -1,11 +1,13 @@
-package com.yozakuraMinato.monoteBe.user.service.implement;
+package com.yozakuraMinato.monoteBe.security.service.implement;
 
-import com.yozakuraMinato.monoteBe.user.service.JwtApiService;
-import com.yozakuraMinato.monoteBe.user.service.JwtApplicationService;
+import com.yozakuraMinato.monoteBe.security.service.JwtApplicationService;
+import com.yozakuraMinato.monoteBe.security.service.JwtApiService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -16,12 +18,19 @@ import java.util.*;
 import java.util.function.Function;
 
 @Service
-public class JwtServiceImplement implements JwtApplicationService, JwtApiService {
+public class JwtServiceImplement implements JwtApiService, JwtApplicationService {
+
+    @Value("${security.jwt.key-algorithm}")
+    private String keyAlgorithm;
+
+    @Value("${security.jwt.access-token-expiration}")
+    private int accessTokenExpiration;
 
     private String secretKey;
 
-    public JwtServiceImplement() throws NoSuchAlgorithmException {
-        KeyGenerator keyGenerator = KeyGenerator.getInstance("HmacSHA256");
+    @PostConstruct
+    public void init() throws NoSuchAlgorithmException {
+        KeyGenerator keyGenerator = KeyGenerator.getInstance(keyAlgorithm);
         secretKey = Base64.getEncoder().encodeToString(
                 keyGenerator.generateKey().getEncoded());
     }
@@ -34,7 +43,7 @@ public class JwtServiceImplement implements JwtApplicationService, JwtApiService
                 .add(claims)
                 .subject(email)
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 60 * 60 * 30))
+                .expiration(new Date(System.currentTimeMillis() + accessTokenExpiration))
                 .and().signWith(getKey()).compact();
     }
 

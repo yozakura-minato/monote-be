@@ -35,4 +35,8 @@ logging:
 
 security:
   public-path: "/sign-up,/sign-in,/reset-password"
-  encoder-strength: 12
+  password:
+    encoder-strength: 12
+  jwt:
+    key-algorithm: "HmacSHA256"
+    access-token-expiration: 900_000

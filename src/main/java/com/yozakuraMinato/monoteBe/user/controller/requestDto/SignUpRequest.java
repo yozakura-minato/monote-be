@@ -1,6 +1,6 @@
 package com.yozakuraMinato.monoteBe.user.controller.requestDto;
 
-import com.yozakuraMinato.monoteBe.security.annotation.IsStrongPassword;
+import com.yozakuraMinato.monoteBe.common.annotation.IsStrongPassword;
 import com.yozakuraMinato.monoteBe.common.annotation.NormalizedEmail;
 import com.yozakuraMinato.monoteBe.common.annotation.NormalizedString;
 import com.yozakuraMinato.monoteBe.user.shared.UserConstant;
