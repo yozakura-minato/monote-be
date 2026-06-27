@@ -40,7 +40,7 @@ public class UserServiceImplement implements UserApplicationService {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private JwtApiService jwtService;
+    private JwtApiService jwtApiService;
 
     @Override
     public SignUpResponse signUp(SignUpRequest signUpRequest) {
@@ -68,7 +68,7 @@ public class UserServiceImplement implements UserApplicationService {
         UserDetailsImplement userDetailsImplement = (UserDetailsImplement) authentication.getPrincipal();
         String accessToken = null;
         if (userDetailsImplement != null) {
-            accessToken = jwtService.generateToken(userDetailsImplement.getUsername());
+            accessToken = jwtApiService.generateToken(userDetailsImplement.getUsername());
         }
         return new SignInResponse(accessToken, null);
     }

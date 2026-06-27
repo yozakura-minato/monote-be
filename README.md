@@ -1,7 +1,7 @@
-# MONOTE BE
+# MONOTE BE REPO
 > Repository for Monote server application
 >
-> [`FE repo`](https://github.com/yozakura-minato/monote-fe) [`Task board`](https://github.com/users/yozakura-minato/projects/4)
+> [`Monote FE repo`](https://github.com/yozakura-minato/monote-fe) [`Ticket board`](https://github.com/users/yozakura-minato/projects/4)
 
 **Monote** is a web application for users to plan and track their personal expenses.
 The main goal is to help user take full control of their financial health and achieve their savings goals.
@@ -17,8 +17,9 @@ The main goal is to help user take full control of their financial health and ac
 - PostgreSQL, Redis
 - Docker, Flyway
 
-### Architecture diagram
-![alt text](./docs/architecture_diagram.png)
+### System architecture diagram
+![alt text](./docs/bsad.png)
+![alt text](./docs/dsad.png)
 
 ### Entity-relationship diagram
 ![alt text](./docs/erd.png)
