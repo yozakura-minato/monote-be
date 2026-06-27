@@ -1,5 +1,6 @@
 package com.yozakuraMinato.monoteBe.user.repository.model;
 
+import com.yozakuraMinato.monoteBe.persistence.entity.BaseEntity;
 import com.yozakuraMinato.monoteBe.user.shared.type.UserRole;
 import com.yozakuraMinato.monoteBe.user.shared.type.UserStatus;
 import jakarta.persistence.*;
@@ -7,7 +8,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.SQLRestriction;
 
-import java.time.Instant;
 import java.util.UUID;
 
 @Entity
@@ -15,7 +15,7 @@ import java.util.UUID;
 @Getter
 @Table(name = "users")
 @SQLRestriction("deleted_at IS NULL")
-public class User {
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue
@@ -29,12 +29,5 @@ public class User {
     private UserRole role;
     @Enumerated(EnumType.STRING)
     private UserStatus status;
-
-    private Instant createdAt;
-    private UUID createdBy;
-    private Instant updatedAt;
-    private UUID updatedBy;
-    private Instant deletedAt;
-    private UUID deletedBy;
 
 }

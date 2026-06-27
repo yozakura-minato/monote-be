@@ -1,18 +1,18 @@
 package com.yozakuraMinato.monoteBe.user.service.implement;
 
+import com.yozakuraMinato.monoteBe.security.service.JwtApiService;
+import com.yozakuraMinato.monoteBe.user.controller.dto.SignInRequest;
+import com.yozakuraMinato.monoteBe.user.controller.dto.SignInResponse;
+import com.yozakuraMinato.monoteBe.user.controller.dto.SignUpRequest;
+import com.yozakuraMinato.monoteBe.user.controller.dto.SignUpResponse;
+import com.yozakuraMinato.monoteBe.user.repository.UserRepository;
+import com.yozakuraMinato.monoteBe.user.repository.model.User;
+import com.yozakuraMinato.monoteBe.user.repository.model.UserDetailsImplement;
+import com.yozakuraMinato.monoteBe.user.service.UserApplicationService;
+import com.yozakuraMinato.monoteBe.user.shared.UserMapper;
 import com.yozakuraMinato.monoteBe.user.shared.UserMessage;
 import com.yozakuraMinato.monoteBe.user.shared.type.UserRole;
 import com.yozakuraMinato.monoteBe.user.shared.type.UserStatus;
-import com.yozakuraMinato.monoteBe.user.shared.UserMapper;
-import com.yozakuraMinato.monoteBe.user.repository.model.User;
-import com.yozakuraMinato.monoteBe.user.repository.model.UserDetailsImplement;
-import com.yozakuraMinato.monoteBe.user.controller.dto.SignInRequest;
-import com.yozakuraMinato.monoteBe.user.controller.dto.SignUpRequest;
-import com.yozakuraMinato.monoteBe.user.controller.dto.SignInResponse;
-import com.yozakuraMinato.monoteBe.user.controller.dto.SignUpResponse;
-import com.yozakuraMinato.monoteBe.user.repository.UserRepository;
-import com.yozakuraMinato.monoteBe.security.service.JwtApiService;
-import com.yozakuraMinato.monoteBe.user.service.UserApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,8 +21,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.time.Instant;
 
 @Service
 public class UserServiceImplement implements UserApplicationService {
@@ -53,7 +51,6 @@ public class UserServiceImplement implements UserApplicationService {
         newUser.setHashedPassword(passwordEncoder.encode(signUpRequest.password()));
         newUser.setRole(UserRole.USER);
         newUser.setStatus(UserStatus.ACTIVATE);
-        newUser.setCreatedAt(Instant.now());
         userRepository.save(newUser);
 
         return userMapper.entityToSignUpResponse(newUser);
