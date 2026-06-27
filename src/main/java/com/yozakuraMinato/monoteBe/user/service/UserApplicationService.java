@@ -1,9 +1,9 @@
 package com.yozakuraMinato.monoteBe.user.service;
 
-import com.yozakuraMinato.monoteBe.user.controller.requestDto.SignInRequest;
-import com.yozakuraMinato.monoteBe.user.controller.requestDto.SignUpRequest;
-import com.yozakuraMinato.monoteBe.user.controller.responseDto.SignInResponse;
-import com.yozakuraMinato.monoteBe.user.controller.responseDto.SignUpResponse;
+import com.yozakuraMinato.monoteBe.user.controller.dto.SignInRequest;
+import com.yozakuraMinato.monoteBe.user.controller.dto.SignUpRequest;
+import com.yozakuraMinato.monoteBe.user.controller.dto.SignInResponse;
+import com.yozakuraMinato.monoteBe.user.controller.dto.SignUpResponse;
 
 public interface UserApplicationService {
 

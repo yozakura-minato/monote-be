@@ -1,10 +1,10 @@
 package com.yozakuraMinato.monoteBe.user.controller;
 
 import com.yozakuraMinato.monoteBe.common.wrapper.ApplicationResponse;
-import com.yozakuraMinato.monoteBe.user.controller.requestDto.SignInRequest;
-import com.yozakuraMinato.monoteBe.user.controller.requestDto.SignUpRequest;
-import com.yozakuraMinato.monoteBe.user.controller.responseDto.SignInResponse;
-import com.yozakuraMinato.monoteBe.user.controller.responseDto.SignUpResponse;
+import com.yozakuraMinato.monoteBe.user.controller.dto.SignInRequest;
+import com.yozakuraMinato.monoteBe.user.controller.dto.SignUpRequest;
+import com.yozakuraMinato.monoteBe.user.controller.dto.SignInResponse;
+import com.yozakuraMinato.monoteBe.user.controller.dto.SignUpResponse;
 import com.yozakuraMinato.monoteBe.user.service.UserApplicationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
