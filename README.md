@@ -6,7 +6,7 @@
 **Monote** is a web application for users to plan and track their personal expenses.
 The main goal is to help user take full control of their financial health and achieve their savings goals.
 
-### Core features:
+### Core features
 
 - **Budget planning**: Create and customize financial plans (amount, spending purposes, financial sources) for a specific period.
 - **Allocation suggestions**: Suggest transaction to allocate user money as the preparation for Expense tracking & Analytics. 
