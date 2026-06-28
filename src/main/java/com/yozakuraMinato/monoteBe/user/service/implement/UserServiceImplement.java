@@ -51,9 +51,9 @@ public class UserServiceImplement implements UserApplicationService {
         newUser.setHashedPassword(passwordEncoder.encode(signUpRequest.password()));
         newUser.setRole(UserRole.USER);
         newUser.setStatus(UserStatus.ACTIVATE);
-        userRepository.save(newUser);
 
-        return userMapper.entityToSignUpResponse(newUser);
+        User createdUser = userRepository.save(newUser);
+        return userMapper.entityToSignUpResponse(createdUser);
     }
 
     @Override
@@ -67,6 +67,7 @@ public class UserServiceImplement implements UserApplicationService {
         if (userDetailsImplement != null) {
             accessToken = jwtApiService.generateToken(userDetailsImplement.getUsername());
         }
+
         return new SignInResponse(accessToken, null);
     }
 
