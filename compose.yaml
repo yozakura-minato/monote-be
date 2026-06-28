@@ -11,7 +11,7 @@ services:
     ports:
       - '5433:5432'
     volumes:
-      - pg_data:/var/lib/postgresql
+      - postgres_data:/var/lib/postgresql
 
   redis:
     image: 'redis:latest'
@@ -19,10 +19,10 @@ services:
     environment:
       - 'TZ=Asia/Ho_Chi_Minh'
     ports:
-      - '6379'
+      - '6379:6379'
     volumes:
       - redis_data:/data
 
 volumes:
-  pg_data:
+  postgres_data:
   redis_data:
