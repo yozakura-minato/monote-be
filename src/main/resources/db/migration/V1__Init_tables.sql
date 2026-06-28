@@ -31,7 +31,7 @@ create unique index idx_unique_user_google_id
 ------------------------------------------------------------------------------------------------------------------------
 
 create table accounts(
-    id bigint primary key,
+    id bigint generated always as identity primary key,
     user_id uuid not null,						
 
     name varchar(100) not null,					
@@ -62,7 +62,7 @@ create unique index idx_unique_account_name
 ------------------------------------------------------------------------------------------------------------------------
 
 create table categories(
-    id bigint primary key,
+    id bigint generated always as identity primary key,
     user_id uuid not null,						
 
     name varchar(100) not null,					
@@ -91,7 +91,7 @@ create unique index idx_unique_category_name
 ------------------------------------------------------------------------------------------------------------------------
 
 create table tracking_periods(
-    id bigint primary key,
+    id bigint generated always as identity primary key,
     user_id uuid not null,
     source_account bigint,
 	auto_fill_destination_account bigint,
@@ -132,7 +132,7 @@ create unique index idx_unique_budget_name_and_type
 ------------------------------------------------------------------------------------------------------------------------
 
 create table allocations(
-	id bigint primary key,
+	id bigint generated always as identity primary key,
 	user_id uuid not null,
     period_id bigint not null,
     account_id bigint not null,
