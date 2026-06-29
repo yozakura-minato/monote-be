@@ -18,8 +18,8 @@ import java.util.UUID;
 public class Account extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue
+    private UUID id;
     private UUID userId;
 
     private String name;
