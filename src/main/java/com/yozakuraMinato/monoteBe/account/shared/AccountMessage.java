@@ -3,8 +3,13 @@ package com.yozakuraMinato.monoteBe.account.shared;
 public class AccountMessage {
 
     private static final String account = "account.";
+    private static final String id = account + "id.";
     private static final String userId = account + "userId.";
     private static final String name = account + "name.";
+
+    public static class Id {
+        public static final String notFound = id + "notFound";
+    }
 
     public static class UserId {
         public static final String isNull = userId + "isNull";
