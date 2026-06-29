@@ -3,10 +3,11 @@ package com.yozakuraMinato.monoteBe.account.controller.dto;
 import com.yozakuraMinato.monoteBe.account.shared.type.AccountStatus;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
-public record CreateAccountResponse (
+public record AccountMasterResponse(
 
-        Long id,
+        UUID id,
         String name,
         String description,
         AccountStatus status,
