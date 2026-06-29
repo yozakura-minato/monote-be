@@ -39,3 +39,4 @@ The main goal is to help user take full control of their financial health and ac
 || Monote BE started successfully ||
 ||================================||
 ```
+5. **Monote Server Application** is now running at: `http://localhost:8080/`.
