@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -92,6 +93,23 @@ public class AccountServiceImplement implements AccountApplicationService {
         accountMapper.updateEntityFromUpdateRequest(accountUpdateRequest, accountToUpdate);
         Account updatedAccount =  accountRepository.save(accountToUpdate);
         return accountMapper.entityToMasterResponse(updatedAccount);
+    }
+
+    @Override
+    public AccountMasterResponse deleteAccount(UUID id) {
+        UUID userId = securityContextApiService
+                .getUserId()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, AccountMessage.UserId.isNull));
+
+        Account existsAccount = accountRepository
+                .findByIdAndUserId(id, userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, AccountMessage.Id.notFound));
+
+        existsAccount.setDeletedAt(Instant.now());
+        existsAccount.setDeletedBy(userId);
+        Account deletedAccount = accountRepository.save(existsAccount);
+
+        return accountMapper.entityToMasterResponse(deletedAccount);
     }
 
 }

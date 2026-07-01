@@ -53,4 +53,12 @@ public class AccountController {
                 .body((ApplicationResponse.data(accountMasterResponse)));
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApplicationResponse<AccountMasterResponse>> deleteAccount(@PathVariable UUID id) {
+        AccountMasterResponse accountMasterResponse = accountApplicationService.deleteAccount(id);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ApplicationResponse.data(accountMasterResponse));
+    }
+
 }

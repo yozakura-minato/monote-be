@@ -13,5 +13,6 @@ public interface AccountApplicationService {
     AccountMasterResponse getAccountById(UUID id);
     List<AccountMasterResponse> getAllAccounts();
     AccountMasterResponse updateAccount(UUID id, AccountUpdateRequest accountUpdateRequest);
+    AccountMasterResponse deleteAccount(UUID id);
 
 }
