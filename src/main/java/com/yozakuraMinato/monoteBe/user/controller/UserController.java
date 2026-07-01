@@ -9,7 +9,7 @@ import com.yozakuraMinato.monoteBe.user.controller.dto.SignUpResponse;
 import com.yozakuraMinato.monoteBe.user.service.UserApplicationService;
 import com.yozakuraMinato.monoteBe.user.shared.UserMessage;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,13 +21,12 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.UUID;
 
 @RestController
+@RequiredArgsConstructor
 public class UserController {
 
-    @Autowired
-    private UserApplicationService userApplicationService;
+    private final UserApplicationService userApplicationService;
 
-    @Autowired
-    private SecurityContextApiService securityContextApiService;
+    private final SecurityContextApiService securityContextApiService;
 
     @PostMapping("/sign-up")
     public ResponseEntity<ApplicationResponse<SignUpResponse>> signUp(@RequestBody @Valid SignUpRequest signUpRequest) {

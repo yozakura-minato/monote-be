@@ -6,7 +6,7 @@ import com.yozakuraMinato.monoteBe.account.controller.dto.AccountUpdateRequest;
 import com.yozakuraMinato.monoteBe.account.service.AccountApplicationService;
 import com.yozakuraMinato.monoteBe.common.wrapper.ApplicationResponse;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,10 +16,10 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/accounts/")
+@RequiredArgsConstructor
 public class AccountController {
 
-    @Autowired
-    private AccountApplicationService accountApplicationService;
+    private final AccountApplicationService accountApplicationService;
 
     @PostMapping("/")
     public ResponseEntity<ApplicationResponse<AccountMasterResponse>> createAccount(@RequestBody @Valid AccountMasterRequest accountMasterRequest) {

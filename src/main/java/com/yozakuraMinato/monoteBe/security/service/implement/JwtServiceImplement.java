@@ -48,7 +48,7 @@ public class JwtServiceImplement implements JwtApiService, JwtApplicationService
     }
 
     private SecretKey getKey() {
-        byte keyBytes[] = Decoders.BASE64.decode(secretKey);
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 

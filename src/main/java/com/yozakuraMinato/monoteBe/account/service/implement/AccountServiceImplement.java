@@ -11,7 +11,7 @@ import com.yozakuraMinato.monoteBe.account.shared.AccountMapper;
 import com.yozakuraMinato.monoteBe.account.shared.AccountMessage;
 import com.yozakuraMinato.monoteBe.account.shared.type.AccountStatus;
 import com.yozakuraMinato.monoteBe.security.service.SecurityContextApiService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -22,16 +22,14 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class AccountServiceImplement implements AccountApplicationService {
 
-    @Autowired
-    private AccountRepository accountRepository;
+    private final AccountRepository accountRepository;
 
-    @Autowired
-    private AccountMapper accountMapper;
+    private final AccountMapper accountMapper;
 
-    @Autowired
-    private SecurityContextApiService securityContextApiService;
+    private final SecurityContextApiService securityContextApiService;
 
     @Override
     public AccountMasterResponse createAccount(AccountMasterRequest accountMasterRequest) {
