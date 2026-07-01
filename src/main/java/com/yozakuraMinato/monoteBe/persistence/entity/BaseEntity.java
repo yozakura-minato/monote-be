@@ -21,20 +21,22 @@ import java.util.UUID;
 public abstract class BaseEntity {
 
     @CreatedDate
-    @Column(updatable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
     @CreatedBy
-    @Column(updatable = false)
+    @Column(name = "created_by", nullable = false, updatable = false)
     private UUID createdBy;
 
     @LastModifiedDate
-    @Column(insertable = false)
+    @Column(name = "updated_at", insertable = false)
     private Instant updatedAt;
     @LastModifiedBy
-    @Column(insertable = false)
+    @Column(name = "updated_by", insertable = false)
     private UUID updatedBy;
 
+    @Column(name = "deleted_at", insertable = false)
     private Instant deletedAt;
+    @Column(name = "deleted_by", insertable = false)
     private UUID deletedBy;
 
 }
