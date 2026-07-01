@@ -2,6 +2,7 @@ package com.yozakuraMinato.monoteBe.account.service.implement;
 
 import com.yozakuraMinato.monoteBe.account.controller.dto.AccountMasterRequest;
 import com.yozakuraMinato.monoteBe.account.controller.dto.AccountMasterResponse;
+import com.yozakuraMinato.monoteBe.account.controller.dto.AccountUpdateRequest;
 import com.yozakuraMinato.monoteBe.account.repository.AccountRepository;
 import com.yozakuraMinato.monoteBe.account.repository.model.Account;
 import com.yozakuraMinato.monoteBe.account.repository.projection.AccountProjection;
@@ -58,7 +59,7 @@ public class AccountServiceImplement implements AccountApplicationService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, AccountMessage.UserId.isNull));
 
         AccountProjection existsAccount = accountRepository
-                .findByIdAndUserId(id, userId)
+                .findProjectionByIdAndUserId(id, userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, AccountMessage.Id.notFound));
         return accountMapper.projectionToMasterResponse(existsAccount);
     }
@@ -69,8 +70,28 @@ public class AccountServiceImplement implements AccountApplicationService {
                 .getUserId()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, AccountMessage.UserId.isNull));
 
-        List<AccountProjection> existsAccounts = accountRepository.findByUserId(userId);
+        List<AccountProjection> existsAccounts = accountRepository.findProjectionByUserId(userId);
         return accountMapper.projectionListToMasterResponseList(existsAccounts);
+    }
+
+    @Override
+    public AccountMasterResponse updateAccount(UUID id, AccountUpdateRequest accountUpdateRequest) {
+        UUID userId = securityContextApiService
+                .getUserId()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, AccountMessage.UserId.isNull));
+
+        Account accountToUpdate = accountRepository
+                .findByIdAndUserId(id, userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, AccountMessage.Id.notFound));
+
+        boolean isNameExists = accountRepository.existsByNameAndUserIdAndIdIsNot(accountUpdateRequest.name(), userId, id);
+        if(isNameExists) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, AccountMessage.Name.alreadyExists);
+        }
+
+        accountMapper.updateEntityFromUpdateRequest(accountUpdateRequest, accountToUpdate);
+        Account updatedAccount =  accountRepository.save(accountToUpdate);
+        return accountMapper.entityToMasterResponse(updatedAccount);
     }
 
 }
