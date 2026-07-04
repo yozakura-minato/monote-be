@@ -4,7 +4,7 @@ import com.yozakuraMinato.monoteBe.account.controller.dto.AccountMasterRequest;
 import com.yozakuraMinato.monoteBe.account.controller.dto.AccountMasterResponse;
 import com.yozakuraMinato.monoteBe.account.controller.dto.AccountUpdateRequest;
 import com.yozakuraMinato.monoteBe.account.service.AccountApplicationService;
-import com.yozakuraMinato.monoteBe.common.wrapper.ApplicationResponse;
+import com.yozakuraMinato.monoteBe.shared.wrapper.ApplicationResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

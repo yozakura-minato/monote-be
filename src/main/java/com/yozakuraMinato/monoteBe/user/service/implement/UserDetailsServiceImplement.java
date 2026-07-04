@@ -3,8 +3,9 @@ package com.yozakuraMinato.monoteBe.user.service.implement;
 import com.yozakuraMinato.monoteBe.user.repository.UserRepository;
 import com.yozakuraMinato.monoteBe.user.repository.model.UserDetailsImplement;
 import com.yozakuraMinato.monoteBe.user.repository.projection.UserDetailsProjection;
-import com.yozakuraMinato.monoteBe.user.shared.UserMessage;
-import com.yozakuraMinato.monoteBe.user.shared.type.UserStatus;
+import com.yozakuraMinato.monoteBe.user.UserMessage;
+import com.yozakuraMinato.monoteBe.user.repository.type.UserStatus;
+import com.yozakuraMinato.monoteBe.user.service.UserDetailsApiService;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NullMarked;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class UserDetailsServiceImplement implements UserDetailsService {
+public class UserDetailsServiceImplement implements UserDetailsService, UserDetailsApiService {
 
     private final UserRepository userRepository;
 

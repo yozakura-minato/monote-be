@@ -1,8 +1,8 @@
 package com.yozakuraMinato.monoteBe.user.controller.dto;
 
-import com.yozakuraMinato.monoteBe.common.annotation.NormalizedEmail;
-import com.yozakuraMinato.monoteBe.common.annotation.NormalizedString;
-import com.yozakuraMinato.monoteBe.user.shared.UserMessage;
+import com.yozakuraMinato.monoteBe.shared.annotation.NormalizedEmail;
+import com.yozakuraMinato.monoteBe.shared.annotation.NormalizedString;
+import com.yozakuraMinato.monoteBe.user.UserMessage;
 import jakarta.validation.constraints.NotNull;
 
 public record SignInRequest(

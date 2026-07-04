@@ -7,12 +7,12 @@ import com.yozakuraMinato.monoteBe.account.repository.AccountRepository;
 import com.yozakuraMinato.monoteBe.account.repository.model.Account;
 import com.yozakuraMinato.monoteBe.account.repository.projection.AccountProjection;
 import com.yozakuraMinato.monoteBe.account.service.AccountApplicationService;
-import com.yozakuraMinato.monoteBe.account.shared.AccountMapper;
-import com.yozakuraMinato.monoteBe.account.shared.AccountMessage;
-import com.yozakuraMinato.monoteBe.account.shared.type.AccountStatus;
-import com.yozakuraMinato.monoteBe.common.exception.custom.ResourceConflictException;
-import com.yozakuraMinato.monoteBe.common.exception.custom.ResourceNotFoundException;
-import com.yozakuraMinato.monoteBe.security.service.SecurityContextApiService;
+import com.yozakuraMinato.monoteBe.account.service.mapper.AccountMapper;
+import com.yozakuraMinato.monoteBe.account.AccountMessage;
+import com.yozakuraMinato.monoteBe.account.repository.type.AccountStatus;
+import com.yozakuraMinato.monoteBe.shared.exception.custom.ResourceConflictException;
+import com.yozakuraMinato.monoteBe.shared.exception.custom.ResourceNotFoundException;
+import com.yozakuraMinato.monoteBe.user.service.UserContextApiService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -31,11 +31,11 @@ public class AccountServiceImplement implements AccountApplicationService {
 
     private final AccountMapper accountMapper;
 
-    private final SecurityContextApiService securityContextApiService;
+    private final UserContextApiService userContextApiService;
 
     @Override
     public void createAccount(AccountMasterRequest accountMasterRequest) {
-        UUID userId = securityContextApiService
+        UUID userId = userContextApiService
                 .getUserId()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, AccountMessage.UserId.isNull));
 
@@ -51,7 +51,7 @@ public class AccountServiceImplement implements AccountApplicationService {
 
     @Override
     public AccountMasterResponse getAccountById(UUID id) {
-        UUID userId = securityContextApiService
+        UUID userId = userContextApiService
                 .getUserId()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, AccountMessage.UserId.isNull));
 
@@ -63,7 +63,7 @@ public class AccountServiceImplement implements AccountApplicationService {
 
     @Override
     public List<AccountMasterResponse> getAllAccounts() {
-        UUID userId = securityContextApiService
+        UUID userId = userContextApiService
                 .getUserId()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, AccountMessage.UserId.isNull));
 
@@ -74,7 +74,7 @@ public class AccountServiceImplement implements AccountApplicationService {
     @Override
     @Transactional
     public void updateAccount(UUID id, AccountUpdateRequest accountUpdateRequest) {
-        UUID userId = securityContextApiService
+        UUID userId = userContextApiService
                 .getUserId()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, AccountMessage.UserId.isNull));
 
@@ -93,7 +93,7 @@ public class AccountServiceImplement implements AccountApplicationService {
     @Override
     @Transactional
     public void deleteAccount(UUID id) {
-        UUID userId = securityContextApiService
+        UUID userId = userContextApiService
                 .getUserId()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, AccountMessage.UserId.isNull));
         accountRepository
