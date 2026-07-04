@@ -1,0 +1,7 @@
+package com.yozakuraMinato.monoteBe.common.exception.custom;
+
+public class ResourceNotFoundException extends RuntimeException{
+    public ResourceNotFoundException(String message) {
+        super(message);
+    }
+}

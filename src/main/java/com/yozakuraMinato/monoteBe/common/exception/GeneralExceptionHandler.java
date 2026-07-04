@@ -1,41 +1,42 @@
 package com.yozakuraMinato.monoteBe.common.exception;
 
+import com.yozakuraMinato.monoteBe.common.exception.custom.ResourceConflictException;
+import com.yozakuraMinato.monoteBe.common.exception.custom.ResourceNotFoundException;
+import com.yozakuraMinato.monoteBe.common.exception.custom.BusinessRuleException;
 import com.yozakuraMinato.monoteBe.common.wrapper.ApplicationResponse;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.List;
 
 @ControllerAdvice
 public class GeneralExceptionHandler {
 
-    @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<ApplicationResponse<?>> handleAccessDeniedException(AccessDeniedException accessDeniedException) {
+    @ExceptionHandler(value = ResourceNotFoundException.class)
+    public ResponseEntity<ApplicationResponse<?>> handleResourceNotFoundException(ResourceNotFoundException resourceNotFoundException) {
         return ResponseEntity
-                .status(HttpStatus.UNAUTHORIZED)
-                .body(ApplicationResponse.error(GeneralMessage.accessDeniedException));
+                .status(HttpStatus.NOT_FOUND)
+                .body(ApplicationResponse.error(resourceNotFoundException.getMessage()));
     }
 
-    @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<ApplicationResponse<?>> handleBadCredentialsException(BadCredentialsException badCredentialsException) {
-        return ResponseEntity
-                .status(HttpStatus.UNAUTHORIZED)
-                .body(ApplicationResponse.error(GeneralMessage.badCredentialsException));
-    }
-
-    @ExceptionHandler(value = DataIntegrityViolationException.class)
-    public ResponseEntity<ApplicationResponse<?>> handleDataIntegrityViolationException(DataIntegrityViolationException dataIntegrityViolationException) {
+    @ExceptionHandler(value = ResourceConflictException.class)
+    public ResponseEntity<ApplicationResponse<?>> handleResourceConflictException(ResourceConflictException resourceConflictException) {
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
-                .body(ApplicationResponse.error(GeneralMessage.dataIntegrityViolationException));
+                .body(ApplicationResponse.error(resourceConflictException.getMessage()));
+    }
+
+    @ExceptionHandler(value = BusinessRuleException.class)
+    public ResponseEntity<ApplicationResponse<?>> handleBusinessRuleException(BusinessRuleException businessRuleException) {
+        return ResponseEntity
+                .status(HttpStatus.UNPROCESSABLE_CONTENT)
+                .body(ApplicationResponse.error(businessRuleException.getMessage()));
     }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
@@ -44,30 +45,32 @@ public class GeneralExceptionHandler {
         if(errors.isEmpty()) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
-                    .body(ApplicationResponse.error(GeneralMessage.methodArgumentNotValidException));
+                    .body(ApplicationResponse.error(GeneralMessage.badRequest));
         }
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(ApplicationResponse.error(errors.getFirst().getDefaultMessage()));
     }
 
-    @ExceptionHandler(value = ResponseStatusException.class)
-    public ResponseEntity<ApplicationResponse<?>> handleResponseStatusException(ResponseStatusException responseStatusException) {
-        if(responseStatusException.getMessage().isBlank()) {
-            return ResponseEntity
-                    .status(responseStatusException.getStatusCode())
-                    .body(ApplicationResponse.error(GeneralMessage.responseStatusException));
-        }
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ApplicationResponse<?>> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
         return ResponseEntity
-                .status(responseStatusException.getStatusCode())
-                .body(ApplicationResponse.error(responseStatusException.getReason()));
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ApplicationResponse.error(GeneralMessage.badRequest));
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ApplicationResponse<?>> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ApplicationResponse.error(GeneralMessage.badRequest));
     }
 
     @ExceptionHandler(value = RuntimeException.class)
     public ResponseEntity<ApplicationResponse<?>> handleRuntimeException(RuntimeException runtimeException) {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(ApplicationResponse.error(GeneralMessage.runtimeException));
+                .body(ApplicationResponse.error(GeneralMessage.internalError));
     }
 
 }
