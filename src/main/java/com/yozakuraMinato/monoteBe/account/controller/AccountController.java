@@ -22,18 +22,16 @@ public class AccountController {
     private final AccountApplicationService accountApplicationService;
 
     @PostMapping("/")
-    public ResponseEntity<ApplicationResponse<AccountMasterResponse>> createAccount(@RequestBody @Valid AccountMasterRequest accountMasterRequest) {
-        AccountMasterResponse accountMasterResponse = accountApplicationService.createAccount(accountMasterRequest);
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(ApplicationResponse.data(accountMasterResponse));
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createAccount(@RequestBody @Valid AccountMasterRequest accountMasterRequest) {
+        accountApplicationService.createAccount(accountMasterRequest);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ApplicationResponse<AccountMasterResponse>> getAccountById(@PathVariable UUID id) {
         AccountMasterResponse accountMasterResponse = accountApplicationService.getAccountById(id);
         return ResponseEntity
-                .status((HttpStatus.OK))
+                .status(HttpStatus.OK)
                 .body(ApplicationResponse.data(accountMasterResponse));
     }
 
@@ -46,19 +44,13 @@ public class AccountController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApplicationResponse<AccountMasterResponse>> updateAccount(@PathVariable UUID id, @RequestBody @Valid AccountUpdateRequest accountUpdateRequest) {
-        AccountMasterResponse accountMasterResponse = accountApplicationService.updateAccount(id, accountUpdateRequest);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body((ApplicationResponse.data(accountMasterResponse)));
+    public void updateAccount(@PathVariable UUID id, @RequestBody @Valid AccountUpdateRequest accountUpdateRequest) {
+        accountApplicationService.updateAccount(id, accountUpdateRequest);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApplicationResponse<AccountMasterResponse>> deleteAccount(@PathVariable UUID id) {
-        AccountMasterResponse accountMasterResponse = accountApplicationService.deleteAccount(id);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(ApplicationResponse.data(accountMasterResponse));
+    public void deleteAccount(@PathVariable UUID id) {
+        accountApplicationService.deleteAccount(id);
     }
 
 }

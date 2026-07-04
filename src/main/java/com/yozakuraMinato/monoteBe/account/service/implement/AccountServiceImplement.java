@@ -32,7 +32,7 @@ public class AccountServiceImplement implements AccountApplicationService {
     private final SecurityContextApiService securityContextApiService;
 
     @Override
-    public AccountMasterResponse createAccount(AccountMasterRequest accountMasterRequest) {
+    public void createAccount(AccountMasterRequest accountMasterRequest) {
         UUID userId = securityContextApiService
                 .getUserId()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, AccountMessage.UserId.isNull));
@@ -46,9 +46,7 @@ public class AccountServiceImplement implements AccountApplicationService {
         newAccount.setUserId(userId);
         newAccount.setStatus(AccountStatus.ACTIVATE);
         newAccount.setBalance(BigDecimal.ZERO);
-
-        Account createdAccount = accountRepository.save(newAccount);
-        return accountMapper.entityToMasterResponse(createdAccount);
+        accountRepository.save(newAccount);
     }
 
     @Override
@@ -74,7 +72,7 @@ public class AccountServiceImplement implements AccountApplicationService {
     }
 
     @Override
-    public AccountMasterResponse updateAccount(UUID id, AccountUpdateRequest accountUpdateRequest) {
+    public void updateAccount(UUID id, AccountUpdateRequest accountUpdateRequest) {
         UUID userId = securityContextApiService
                 .getUserId()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, AccountMessage.UserId.isNull));
@@ -89,12 +87,11 @@ public class AccountServiceImplement implements AccountApplicationService {
         }
 
         accountMapper.updateEntityFromUpdateRequest(accountUpdateRequest, accountToUpdate);
-        Account updatedAccount =  accountRepository.save(accountToUpdate);
-        return accountMapper.entityToMasterResponse(updatedAccount);
+        accountRepository.save(accountToUpdate);
     }
 
     @Override
-    public AccountMasterResponse deleteAccount(UUID id) {
+    public void deleteAccount(UUID id) {
         UUID userId = securityContextApiService
                 .getUserId()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, AccountMessage.UserId.isNull));
@@ -105,9 +102,7 @@ public class AccountServiceImplement implements AccountApplicationService {
 
         existsAccount.setDeletedAt(Instant.now());
         existsAccount.setDeletedBy(userId);
-        Account deletedAccount = accountRepository.save(existsAccount);
-
-        return accountMapper.entityToMasterResponse(deletedAccount);
+        accountRepository.save(existsAccount);
     }
 
 }
