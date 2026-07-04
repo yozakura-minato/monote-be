@@ -31,7 +31,8 @@ The main goal is to help user take full control of their financial health and ac
 1. Clone or download the repository.
 2. Open the project in **IntelliJ IDEA**.
 3. Wait for Gradle to automatically download dependencies.
-4. Run the `MonoteBeApplication` class.
+4. Start **Docker Engine**.
+5. Run the `MonoteBeApplication` class.
 
 *If the **Run terminal** logs the below log, you are all set.*
 ```
@@ -39,4 +40,4 @@ The main goal is to help user take full control of their financial health and ac
 || Monote BE started successfully ||
 ||================================||
 ```
-5. **Monote Server Application** is now running at: `http://localhost:8080/`.
+6. **Monote Server Application** is now running at: `http://localhost:8080/`.
