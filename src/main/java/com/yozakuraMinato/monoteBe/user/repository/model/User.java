@@ -6,6 +6,7 @@ import com.yozakuraMinato.monoteBe.user.shared.type.UserStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.SQLRestriction;
 
 import java.util.UUID;
@@ -13,8 +14,9 @@ import java.util.UUID;
 @Entity
 @Setter
 @Getter
+@DynamicUpdate
 @Table(name = "users")
-@SQLRestriction("deleted_at IS NULL")
+@SQLRestriction("is_deleted = false")
 public class User extends BaseEntity {
 
     @Id

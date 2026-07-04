@@ -10,14 +10,16 @@ import com.yozakuraMinato.monoteBe.account.service.AccountApplicationService;
 import com.yozakuraMinato.monoteBe.account.shared.AccountMapper;
 import com.yozakuraMinato.monoteBe.account.shared.AccountMessage;
 import com.yozakuraMinato.monoteBe.account.shared.type.AccountStatus;
+import com.yozakuraMinato.monoteBe.common.exception.custom.ResourceConflictException;
+import com.yozakuraMinato.monoteBe.common.exception.custom.ResourceNotFoundException;
 import com.yozakuraMinato.monoteBe.security.service.SecurityContextApiService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,10 +39,8 @@ public class AccountServiceImplement implements AccountApplicationService {
                 .getUserId()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, AccountMessage.UserId.isNull));
 
-        boolean isNameExists = accountRepository.existsByNameAndUserId(accountMasterRequest.name(), userId);
-        if(isNameExists) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, AccountMessage.Name.alreadyExists);
-        }
+        boolean isNameConflict = accountRepository.existsByNameAndUserId(accountMasterRequest.name(), userId);
+        if(isNameConflict) throw new ResourceNotFoundException(AccountMessage.Name.alreadyExists);
 
         Account newAccount = accountMapper.masterRequestToEntity(accountMasterRequest);
         newAccount.setUserId(userId);
@@ -57,7 +57,7 @@ public class AccountServiceImplement implements AccountApplicationService {
 
         AccountProjection existsAccount = accountRepository
                 .findProjectionByIdAndUserId(id, userId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, AccountMessage.Id.notFound));
+                .orElseThrow(() -> new ResourceNotFoundException(AccountMessage.Id.notFound));
         return accountMapper.projectionToMasterResponse(existsAccount);
     }
 
@@ -72,6 +72,7 @@ public class AccountServiceImplement implements AccountApplicationService {
     }
 
     @Override
+    @Transactional
     public void updateAccount(UUID id, AccountUpdateRequest accountUpdateRequest) {
         UUID userId = securityContextApiService
                 .getUserId()
@@ -79,30 +80,28 @@ public class AccountServiceImplement implements AccountApplicationService {
 
         Account accountToUpdate = accountRepository
                 .findByIdAndUserId(id, userId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, AccountMessage.Id.notFound));
+                .orElseThrow(() -> new ResourceNotFoundException(AccountMessage.Id.notFound));
 
-        boolean isNameExists = accountRepository.existsByNameAndUserIdAndIdIsNot(accountUpdateRequest.name(), userId, id);
-        if(isNameExists) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, AccountMessage.Name.alreadyExists);
+        if(accountUpdateRequest.name() != null && !accountUpdateRequest.name().equals(accountToUpdate.getName())) {
+            boolean isNameConflict = accountRepository.existsByNameAndUserIdAndIdIsNot(accountUpdateRequest.name(), userId, id);
+            if(isNameConflict) throw new ResourceConflictException(AccountMessage.Name.alreadyExists);
         }
 
         accountMapper.updateEntityFromUpdateRequest(accountUpdateRequest, accountToUpdate);
-        accountRepository.save(accountToUpdate);
     }
 
     @Override
+    @Transactional
     public void deleteAccount(UUID id) {
         UUID userId = securityContextApiService
                 .getUserId()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, AccountMessage.UserId.isNull));
-
-        Account existsAccount = accountRepository
+        accountRepository
                 .findByIdAndUserId(id, userId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, AccountMessage.Id.notFound));
-
-        existsAccount.setDeletedAt(Instant.now());
-        existsAccount.setDeletedBy(userId);
-        accountRepository.save(existsAccount);
+                .ifPresentOrElse(
+                        account -> account.setDeleted(true),
+                        () -> { throw new ResourceNotFoundException(AccountMessage.Id.notFound); }
+                );
     }
 
 }

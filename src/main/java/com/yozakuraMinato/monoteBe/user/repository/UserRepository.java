@@ -16,7 +16,4 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     Optional<UserDetailsProjection> findByEmailAndStatus(String email, UserStatus userStatus);
     boolean existsByEmail(String email);
 
-    @Query("select u.id from User u where email = :email and status = :userStatus")
-    Optional<UUID> findIdByEmailAndStatus(String email, UserStatus userStatus);
-
 }

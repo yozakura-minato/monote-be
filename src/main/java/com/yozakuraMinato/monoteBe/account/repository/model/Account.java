@@ -5,6 +5,7 @@ import com.yozakuraMinato.monoteBe.persistence.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.SQLRestriction;
 
 import java.math.BigDecimal;
@@ -13,8 +14,9 @@ import java.util.UUID;
 @Entity
 @Setter
 @Getter
+@DynamicUpdate
 @Table(name = "accounts")
-@SQLRestriction("deleted_at IS NULL")
+@SQLRestriction("is_deleted = false")
 public class Account extends BaseEntity {
 
     @Id
