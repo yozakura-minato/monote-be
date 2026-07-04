@@ -13,7 +13,7 @@ import com.yozakuraMinato.monoteBe.user.shared.UserMapper;
 import com.yozakuraMinato.monoteBe.user.shared.UserMessage;
 import com.yozakuraMinato.monoteBe.user.shared.type.UserRole;
 import com.yozakuraMinato.monoteBe.user.shared.type.UserStatus;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,22 +23,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImplement implements UserApplicationService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private UserMapper userMapper;
+    private final UserMapper userMapper;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    @Autowired
-    private JwtApiService jwtApiService;
+    private final JwtApiService jwtApiService;
 
     @Override
     public SignUpResponse signUp(SignUpRequest signUpRequest) {
