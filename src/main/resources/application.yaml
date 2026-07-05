@@ -40,3 +40,7 @@ security:
   jwt:
     key-algorithm: "HmacSHA256"
     access-token-expiration: 900_000
+  auth-header:
+    label: "Authorization"
+    start-at: 7
+    start-with: "Bearer "

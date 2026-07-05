@@ -21,16 +21,15 @@ import java.util.function.Function;
 public class JwtServiceImplement implements JwtApiService, JwtApplicationService {
 
     @Value("${security.jwt.key-algorithm}")
-    private String keyAlgorithm;
-
+    private String KEY_ALGORITHM;
     @Value("${security.jwt.access-token-expiration}")
-    private int accessTokenExpiration;
+    private int ACCESS_TOKERN_EXPIRATION;
 
     private String secretKey;
 
     @PostConstruct
     public void init() throws NoSuchAlgorithmException {
-        KeyGenerator keyGenerator = KeyGenerator.getInstance(keyAlgorithm);
+        KeyGenerator keyGenerator = KeyGenerator.getInstance(KEY_ALGORITHM);
         secretKey = Base64.getEncoder().encodeToString(
                 keyGenerator.generateKey().getEncoded());
     }
@@ -43,18 +42,24 @@ public class JwtServiceImplement implements JwtApiService, JwtApplicationService
                 .add(claims)
                 .subject(email)
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + accessTokenExpiration))
+                .expiration(new Date(System.currentTimeMillis() + ACCESS_TOKERN_EXPIRATION))
                 .and().signWith(getKey()).compact();
-    }
-
-    private SecretKey getKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
-        return Keys.hmacShaKeyFor(keyBytes);
     }
 
     @Override
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
+    }
+
+    @Override
+    public boolean validateToken(String token, UserDetails userDetails) {
+        final String userName = extractUsername(token);
+        return (userName.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    }
+
+    private SecretKey getKey() {
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> claimResolver) {
@@ -68,12 +73,6 @@ public class JwtServiceImplement implements JwtApiService, JwtApplicationService
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
-    }
-
-    @Override
-    public boolean validateToken(String token, UserDetails userDetails) {
-        final String userName = extractUsername(token);
-        return (userName.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
     private boolean isTokenExpired(String token) {

@@ -22,12 +22,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfiguration {
 
     @Value("${security.public-path}")
-    private String[] publicPath;
+    private String[] PUBLIC_PATH;
 
     private final UserDetailsService userDetailsService;
 
     private final PasswordEncoder passwordEncoder;
-
     private final JwtFilter jwtFilter;
 
     @Bean
@@ -35,7 +34,7 @@ public class SecurityConfiguration {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers(publicPath).permitAll()
+                        .requestMatchers(PUBLIC_PATH).permitAll()
                         .anyRequest().authenticated())
                 .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
