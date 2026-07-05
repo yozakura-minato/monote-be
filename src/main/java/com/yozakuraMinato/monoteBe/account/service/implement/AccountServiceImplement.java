@@ -16,10 +16,8 @@ import com.yozakuraMinato.monoteBe.user.service.UserContextApiService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -34,13 +32,7 @@ public class AccountServiceImplement implements AccountApplicationService {
     private final UserContextApiService userContextApiService;
 
     @Override
-    public void createAccount(AccountMasterRequest accountMasterRequest) {
-        UUID userId = userContextApiService
-                .getUserId()
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.INTERNAL_SERVER_ERROR, AccountMessage.UserId.IS_NULL)
-                );
-
+    public void createAccount(AccountMasterRequest accountMasterRequest, UUID userId) {
         boolean isNameConflict = accountRepository.existsByNameAndUserId(accountMasterRequest.name(), userId);
         if(isNameConflict) throw new ResourceConflictException(AccountMessage.Name.ALREADY_EXISTS);
 
@@ -53,13 +45,7 @@ public class AccountServiceImplement implements AccountApplicationService {
     }
 
     @Override
-    public AccountMasterResponse getAccountById(UUID id) {
-        UUID userId = userContextApiService
-                .getUserId()
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.INTERNAL_SERVER_ERROR, AccountMessage.UserId.IS_NULL)
-                );
-
+    public AccountMasterResponse getAccountById(UUID id, UUID userId) {
         AccountProjection existsAccount = accountRepository
                 .findProjectionByIdAndUserId(id, userId)
                 .orElseThrow(() -> new ResourceNotFoundException(AccountMessage.Id.NOT_FOUND));
@@ -68,13 +54,7 @@ public class AccountServiceImplement implements AccountApplicationService {
     }
 
     @Override
-    public Page<AccountMasterResponse> getAllAccounts(Pageable pageable) {
-        UUID userId = userContextApiService
-                .getUserId()
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.INTERNAL_SERVER_ERROR, AccountMessage.UserId.IS_NULL)
-                );
-
+    public Page<AccountMasterResponse> getAllAccounts(Pageable pageable, UUID userId) {
         Page<AccountProjection> accountPage = accountRepository.findAllProjectionsByUserId(userId, pageable);
 
         return accountPage.map(accountMapper::projectionToMasterResponse);
@@ -82,13 +62,7 @@ public class AccountServiceImplement implements AccountApplicationService {
 
     @Override
     @Transactional
-    public void updateAccount(UUID id, AccountUpdateRequest accountUpdateRequest) {
-        UUID userId = userContextApiService
-                .getUserId()
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.INTERNAL_SERVER_ERROR, AccountMessage.UserId.IS_NULL)
-                );
-
+    public void updateAccount(UUID id, AccountUpdateRequest accountUpdateRequest, UUID userId) {
         Account accountToUpdate = accountRepository
                 .findByIdAndUserId(id, userId)
                 .orElseThrow(() -> new ResourceNotFoundException(AccountMessage.Id.NOT_FOUND));
@@ -105,13 +79,7 @@ public class AccountServiceImplement implements AccountApplicationService {
 
     @Override
     @Transactional
-    public void deleteAccount(UUID id) {
-        UUID userId = userContextApiService
-                .getUserId()
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.INTERNAL_SERVER_ERROR, AccountMessage.UserId.IS_NULL)
-                );
-
+    public void deleteAccount(UUID id, UUID userId) {
         accountRepository
                 .findByIdAndUserId(id, userId)
                 .ifPresentOrElse(

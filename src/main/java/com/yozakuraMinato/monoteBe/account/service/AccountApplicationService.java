@@ -10,10 +10,10 @@ import java.util.UUID;
 
 public interface AccountApplicationService {
 
-    void createAccount(AccountMasterRequest accountMasterRequest);
-    AccountMasterResponse getAccountById(UUID id);
-    Page<AccountMasterResponse> getAllAccounts(Pageable pageable);
-    void updateAccount(UUID id, AccountUpdateRequest accountUpdateRequest);
-    void deleteAccount(UUID id);
+    void createAccount(AccountMasterRequest accountMasterRequest, UUID userId);
+    AccountMasterResponse getAccountById(UUID id, UUID userId);
+    Page<AccountMasterResponse> getAllAccounts(Pageable pageable, UUID userId);
+    void updateAccount(UUID id, AccountUpdateRequest accountUpdateRequest, UUID userId);
+    void deleteAccount(UUID id, UUID userId);
 
 }
