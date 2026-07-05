@@ -1,8 +1,7 @@
 package com.yozakuraMinato.monoteBe.user.service.mapper;
 
-import com.yozakuraMinato.monoteBe.user.repository.model.User;
 import com.yozakuraMinato.monoteBe.user.controller.dto.SignUpRequest;
-import com.yozakuraMinato.monoteBe.user.controller.dto.SignUpResponse;
+import com.yozakuraMinato.monoteBe.user.repository.model.User;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

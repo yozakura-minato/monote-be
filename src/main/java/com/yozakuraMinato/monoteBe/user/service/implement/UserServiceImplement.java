@@ -24,13 +24,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserServiceImplement implements UserApplicationService {
 
-    private final UserRepository userRepository;
-
-    private final UserMapper userMapper;
-
     private final PasswordEncoder passwordEncoder;
-
     private final AuthenticationManager authenticationManager;
+
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     private final JwtApiService jwtApiService;
 
@@ -43,12 +41,12 @@ public class UserServiceImplement implements UserApplicationService {
         newUser.setHashedPassword(passwordEncoder.encode(signUpRequest.password()));
         newUser.setRole(UserRole.USER);
         newUser.setStatus(UserStatus.ACTIVATE);
+
         userRepository.save(newUser);
     }
 
     @Override
     public SignInResponse signIn(SignInRequest signInRequest) {
-
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(signInRequest.email(), signInRequest.password()));
 

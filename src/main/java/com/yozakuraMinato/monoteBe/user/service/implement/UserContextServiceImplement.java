@@ -16,7 +16,9 @@ public class UserContextServiceImplement implements UserContextApiService {
     public Optional<UUID> getUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if(authentication != null && authentication.getPrincipal() instanceof UserDetailsImplement userDetailsImplement) {
+        if(authentication != null
+                && authentication.getPrincipal() instanceof UserDetailsImplement userDetailsImplement
+        ) {
             return Optional.of(userDetailsImplement.getId());
         }
 
