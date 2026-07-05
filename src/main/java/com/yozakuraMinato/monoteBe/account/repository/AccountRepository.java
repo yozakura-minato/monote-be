@@ -14,9 +14,11 @@ import java.util.UUID;
 public interface AccountRepository extends JpaRepository<Account, UUID> {
 
     boolean existsByNameAndUserId(String name, UUID userId);
-    Optional<AccountProjection> findProjectionByIdAndUserId(UUID id, UUID userId);
-    Page<AccountProjection> findAllProjectionsByUserId(UUID userId, Pageable pageable);
     boolean existsByNameAndUserIdAndIdIsNot(String name, UUID userId, UUID id);
+
+    Optional<AccountProjection> findProjectionByIdAndUserId(UUID id, UUID userId);
     Optional<Account> findByIdAndUserId(UUID id, UUID userId);
+
+    Page<AccountProjection> findAllProjectionsByUserId(UUID userId, Pageable pageable);
 
 }

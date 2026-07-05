@@ -25,6 +25,7 @@ import java.util.UUID;
 public class AccountController {
 
     private final AccountApplicationService accountApplicationService;
+    private final String DEFAULT_SORT_FIELD = "id";
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -35,9 +36,7 @@ public class AccountController {
     @GetMapping("/{id}")
     public ResponseEntity<ApplicationResponse<AccountMasterResponse>> getAccountById(@PathVariable UUID id) {
         AccountMasterResponse accountMasterResponse = accountApplicationService.getAccountById(id);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(ApplicationResponse.data(accountMasterResponse));
+        return ResponseEntity.ok(ApplicationResponse.data(accountMasterResponse));
     }
 
     @GetMapping
@@ -48,7 +47,7 @@ public class AccountController {
         Pageable pageRequest = PageRequest.of(
                 pageable.getPageNumber(),
                 pageable.getPageSize(),
-                pageable.getSortOr(Sort.by("name").ascending())
+                pageable.getSortOr(Sort.by(DEFAULT_SORT_FIELD).ascending())
         );
 
         Page<AccountMasterResponse> accountMasterResponseList = accountApplicationService.getAllAccounts(pageRequest);

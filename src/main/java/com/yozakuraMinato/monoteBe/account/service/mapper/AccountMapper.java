@@ -12,7 +12,9 @@ import org.mapstruct.MappingTarget;
 public interface AccountMapper {
 
     Account masterRequestToEntity(AccountMasterRequest accountMasterRequest);
+
     AccountMasterResponse projectionToMasterResponse(AccountProjection accountProjection);
+
     void updateEntityFromUpdateRequest(AccountUpdateRequest accountUpdateRequest, @MappingTarget Account account);
 
 }

@@ -29,7 +29,6 @@ import java.util.UUID;
 public class AccountServiceImplement implements AccountApplicationService {
 
     private final AccountRepository accountRepository;
-
     private final AccountMapper accountMapper;
 
     private final UserContextApiService userContextApiService;
@@ -38,7 +37,9 @@ public class AccountServiceImplement implements AccountApplicationService {
     public void createAccount(AccountMasterRequest accountMasterRequest) {
         UUID userId = userContextApiService
                 .getUserId()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, AccountMessage.UserId.IS_NULL));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.INTERNAL_SERVER_ERROR, AccountMessage.UserId.IS_NULL)
+                );
 
         boolean isNameConflict = accountRepository.existsByNameAndUserId(accountMasterRequest.name(), userId);
         if(isNameConflict) throw new ResourceConflictException(AccountMessage.Name.ALREADY_EXISTS);
@@ -47,6 +48,7 @@ public class AccountServiceImplement implements AccountApplicationService {
         newAccount.setUserId(userId);
         newAccount.setStatus(AccountStatus.ACTIVATE);
         newAccount.setBalance(BigDecimal.ZERO);
+
         accountRepository.save(newAccount);
     }
 
@@ -54,11 +56,14 @@ public class AccountServiceImplement implements AccountApplicationService {
     public AccountMasterResponse getAccountById(UUID id) {
         UUID userId = userContextApiService
                 .getUserId()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, AccountMessage.UserId.IS_NULL));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.INTERNAL_SERVER_ERROR, AccountMessage.UserId.IS_NULL)
+                );
 
         AccountProjection existsAccount = accountRepository
                 .findProjectionByIdAndUserId(id, userId)
                 .orElseThrow(() -> new ResourceNotFoundException(AccountMessage.Id.NOT_FOUND));
+
         return accountMapper.projectionToMasterResponse(existsAccount);
     }
 
@@ -66,9 +71,12 @@ public class AccountServiceImplement implements AccountApplicationService {
     public Page<AccountMasterResponse> getAllAccounts(Pageable pageable) {
         UUID userId = userContextApiService
                 .getUserId()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, AccountMessage.UserId.IS_NULL));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.INTERNAL_SERVER_ERROR, AccountMessage.UserId.IS_NULL)
+                );
 
         Page<AccountProjection> accountPage = accountRepository.findAllProjectionsByUserId(userId, pageable);
+
         return accountPage.map(accountMapper::projectionToMasterResponse);
     }
 
@@ -77,14 +85,18 @@ public class AccountServiceImplement implements AccountApplicationService {
     public void updateAccount(UUID id, AccountUpdateRequest accountUpdateRequest) {
         UUID userId = userContextApiService
                 .getUserId()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, AccountMessage.UserId.IS_NULL));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.INTERNAL_SERVER_ERROR, AccountMessage.UserId.IS_NULL)
+                );
 
         Account accountToUpdate = accountRepository
                 .findByIdAndUserId(id, userId)
                 .orElseThrow(() -> new ResourceNotFoundException(AccountMessage.Id.NOT_FOUND));
 
         if(accountUpdateRequest.name() != null && !accountUpdateRequest.name().equals(accountToUpdate.getName())) {
-            boolean isNameConflict = accountRepository.existsByNameAndUserIdAndIdIsNot(accountUpdateRequest.name(), userId, id);
+            boolean isNameConflict = accountRepository.existsByNameAndUserIdAndIdIsNot(
+                    accountUpdateRequest.name(), userId, id
+            );
             if(isNameConflict) throw new ResourceConflictException(AccountMessage.Name.ALREADY_EXISTS);
         }
 
@@ -96,7 +108,10 @@ public class AccountServiceImplement implements AccountApplicationService {
     public void deleteAccount(UUID id) {
         UUID userId = userContextApiService
                 .getUserId()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, AccountMessage.UserId.IS_NULL));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.INTERNAL_SERVER_ERROR, AccountMessage.UserId.IS_NULL)
+                );
+
         accountRepository
                 .findByIdAndUserId(id, userId)
                 .ifPresentOrElse(

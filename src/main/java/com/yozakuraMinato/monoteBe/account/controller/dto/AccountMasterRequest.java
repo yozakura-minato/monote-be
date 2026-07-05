@@ -12,6 +12,7 @@ public record AccountMasterRequest(
         @NotNull(message = AccountMessage.Name.IS_NULL)
         @Size(max = AccountConstant.Name.MAXIMAL_SIZE, message = AccountMessage.Name.HAS_INVALID_SIZE)
         String name,
+
         @NormalizedString
         String description
 

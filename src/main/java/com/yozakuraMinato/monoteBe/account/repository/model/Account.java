@@ -25,16 +25,20 @@ public class Account extends BaseEntity {
     @UuidGenerator(style = UuidGenerator.Style.TIME)
     @Column(name = "id", updatable = false)
     private UUID id;
+
     @Column(name = "userId", nullable = false, updatable = false)
     private UUID userId;
 
     @Column(name = "name", length = 100, nullable = false)
     private String name;
+
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "status", length = 50, nullable = false)
     private AccountStatus status;
+
     @Column(name = "balance", scale = 14, precision = 2, nullable = false)
     private BigDecimal balance;
 
