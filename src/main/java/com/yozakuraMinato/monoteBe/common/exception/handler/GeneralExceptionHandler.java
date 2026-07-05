@@ -19,9 +19,8 @@ import java.util.List;
 @ControllerAdvice
 public class GeneralExceptionHandler {
 
-    private final String GENERAL = "general.";
-    private final String BAD_REQUEST = GENERAL + "badRequest";
-    private final String INTERNAL_ERROR = GENERAL + "internalError";
+    private final String BAD_REQUEST = "general.badRequest";
+    private final String INTERNAL_ERROR = "general.internalError";
 
     @ExceptionHandler(value = ResourceNotFoundException.class)
     public ResponseEntity<ApplicationResponse<?>> handleResourceNotFoundException(

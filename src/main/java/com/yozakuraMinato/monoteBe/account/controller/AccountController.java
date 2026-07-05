@@ -4,7 +4,7 @@ import com.yozakuraMinato.monoteBe.account.controller.dto.AccountMasterRequest;
 import com.yozakuraMinato.monoteBe.account.controller.dto.AccountMasterResponse;
 import com.yozakuraMinato.monoteBe.account.controller.dto.AccountUpdateRequest;
 import com.yozakuraMinato.monoteBe.account.service.AccountApplicationService;
-import com.yozakuraMinato.monoteBe.common.CommonMessage;
+import com.yozakuraMinato.monoteBe.common.constant.CommonMessage;
 import com.yozakuraMinato.monoteBe.common.annotation.HasValidPageSize;
 import com.yozakuraMinato.monoteBe.common.wrapper.ApplicationResponse;
 import jakarta.validation.Valid;
@@ -24,8 +24,9 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AccountController {
 
+    private static final String DEFAULT_SORT_FIELD = "id";
+
     private final AccountApplicationService accountApplicationService;
-    private final String DEFAULT_SORT_FIELD = "id";
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

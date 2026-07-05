@@ -42,5 +42,5 @@ security:
     access-token-expiration: 900_000
   auth-header:
     label: "Authorization"
-    start-at: 7
-    start-with: "Bearer "
+    start-index: 7
+    start-text: "Bearer "

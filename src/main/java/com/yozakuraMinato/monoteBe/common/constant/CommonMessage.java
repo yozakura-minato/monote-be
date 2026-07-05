@@ -1,4 +1,4 @@
-package com.yozakuraMinato.monoteBe.common;
+package com.yozakuraMinato.monoteBe.common.constant;
 
 public class CommonMessage {
 

@@ -1,4 +1,4 @@
-package com.yozakuraMinato.monoteBe.account.service.mapper;
+package com.yozakuraMinato.monoteBe.account.util;
 
 import com.yozakuraMinato.monoteBe.account.controller.dto.AccountMasterRequest;
 import com.yozakuraMinato.monoteBe.account.controller.dto.AccountMasterResponse;

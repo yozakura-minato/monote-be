@@ -1,7 +1,7 @@
 package com.yozakuraMinato.monoteBe.account.repository.model;
 
-import com.yozakuraMinato.monoteBe.account.repository.type.AccountStatus;
-import com.yozakuraMinato.monoteBe.persistence.entity.BaseEntity;
+import com.yozakuraMinato.monoteBe.account.type.AccountStatus;
+import com.yozakuraMinato.monoteBe.persistence.model.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

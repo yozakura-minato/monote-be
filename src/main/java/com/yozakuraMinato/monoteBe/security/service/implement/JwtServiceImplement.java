@@ -21,15 +21,15 @@ import java.util.function.Function;
 public class JwtServiceImplement implements JwtApiService, JwtApplicationService {
 
     @Value("${security.jwt.key-algorithm}")
-    private String KEY_ALGORITHM;
+    private String keyAlgorithm;
     @Value("${security.jwt.access-token-expiration}")
-    private int ACCESS_TOKERN_EXPIRATION;
+    private int accessTokenExpiration;
 
     private String secretKey;
 
     @PostConstruct
     public void init() throws NoSuchAlgorithmException {
-        KeyGenerator keyGenerator = KeyGenerator.getInstance(KEY_ALGORITHM);
+        KeyGenerator keyGenerator = KeyGenerator.getInstance(keyAlgorithm);
         secretKey = Base64.getEncoder().encodeToString(
                 keyGenerator.generateKey().getEncoded());
     }
@@ -42,7 +42,7 @@ public class JwtServiceImplement implements JwtApiService, JwtApplicationService
                 .add(claims)
                 .subject(email)
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + ACCESS_TOKERN_EXPIRATION))
+                .expiration(new Date(System.currentTimeMillis() + accessTokenExpiration))
                 .and().signWith(getKey()).compact();
     }
 

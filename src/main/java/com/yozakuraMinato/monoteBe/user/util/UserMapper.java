@@ -1,4 +1,4 @@
-package com.yozakuraMinato.monoteBe.user.service.mapper;
+package com.yozakuraMinato.monoteBe.user.util;
 
 import com.yozakuraMinato.monoteBe.user.controller.dto.SignUpRequest;
 import com.yozakuraMinato.monoteBe.user.repository.model.User;

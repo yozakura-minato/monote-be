@@ -1,4 +1,4 @@
-package com.yozakuraMinato.monoteBe.user;
+package com.yozakuraMinato.monoteBe.user.constant;
 
 public class UserMessage {
 
