@@ -1,6 +1,6 @@
 package com.yozakuraMinato.monoteBe.user.service.implement;
 
-import com.yozakuraMinato.monoteBe.shared.exception.custom.ResourceConflictException;
+import com.yozakuraMinato.monoteBe.common.exception.ResourceConflictException;
 import com.yozakuraMinato.monoteBe.security.service.JwtApiService;
 import com.yozakuraMinato.monoteBe.user.controller.dto.SignInRequest;
 import com.yozakuraMinato.monoteBe.user.controller.dto.SignInResponse;
@@ -37,7 +37,7 @@ public class UserServiceImplement implements UserApplicationService {
     @Override
     public void signUp(SignUpRequest signUpRequest) {
         boolean isEmailConflict = userRepository.existsByEmail(signUpRequest.email());
-        if(isEmailConflict) throw new ResourceConflictException(UserMessage.Email.alreadyExists);
+        if(isEmailConflict) throw new ResourceConflictException(UserMessage.Email.ALREADY_EXISTS);
 
         User newUser = userMapper.signUpRequestToEntity(signUpRequest);
         newUser.setHashedPassword(passwordEncoder.encode(signUpRequest.password()));

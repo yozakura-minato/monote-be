@@ -22,7 +22,7 @@ public class AuditConfiguration {
     public AuditorAware<UUID> auditorProvider() {
         return () -> userContextApiService
                 .getUserId()
-                .or(() -> Optional.of(PersistenceConstant.System.id));
+                .or(() -> Optional.of(PersistenceConstant.System.ID));
     }
 
 }

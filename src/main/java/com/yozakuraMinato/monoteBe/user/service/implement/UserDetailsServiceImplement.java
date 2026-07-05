@@ -24,7 +24,7 @@ public class UserDetailsServiceImplement implements UserDetailsService, UserDeta
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         UserDetailsProjection userDetailsProjection = userRepository
                 .findByEmailAndStatus(email, UserStatus.ACTIVATE)
-                .orElseThrow(() -> new UsernameNotFoundException(UserMessage.Email.notFound));
+                .orElseThrow(() -> new UsernameNotFoundException(UserMessage.Email.NOT_FOUND));
 
         return new UserDetailsImplement(userDetailsProjection);
     }

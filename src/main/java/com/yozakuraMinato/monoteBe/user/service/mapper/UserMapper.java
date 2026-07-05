@@ -9,6 +9,5 @@ import org.mapstruct.Mapper;
 public interface UserMapper {
 
     User signUpRequestToEntity(SignUpRequest signUpRequest);
-    SignUpResponse entityToSignUpResponse(User user);
 
 }
