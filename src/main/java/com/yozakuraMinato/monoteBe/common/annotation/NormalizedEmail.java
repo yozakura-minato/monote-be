@@ -1,7 +1,7 @@
-package com.yozakuraMinato.monoteBe.shared.annotation;
+package com.yozakuraMinato.monoteBe.common.annotation;
 
 import com.fasterxml.jackson.annotation.JacksonAnnotationsInside;
-import com.yozakuraMinato.monoteBe.shared.annotation.deserializer.EmailNormalizingDeserializer;
+import com.yozakuraMinato.monoteBe.common.annotation.deserializer.EmailNormalizingDeserializer;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 import java.lang.annotation.*;
