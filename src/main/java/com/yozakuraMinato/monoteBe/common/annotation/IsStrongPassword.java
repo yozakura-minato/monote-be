@@ -1,8 +1,9 @@
-package com.yozakuraMinato.monoteBe.shared.annotation;
+package com.yozakuraMinato.monoteBe.common.annotation;
 
-import com.yozakuraMinato.monoteBe.shared.annotation.validator.PasswordStrengthValidator;
+import com.yozakuraMinato.monoteBe.common.annotation.validator.PasswordStrengthValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
+
 import java.lang.annotation.*;
 
 @Documented
@@ -13,4 +14,6 @@ public @interface IsStrongPassword {
     String message() default "Password is weak";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
+    int minimalSize() default 0;
+    int minimalLevel() default 0;
 }
