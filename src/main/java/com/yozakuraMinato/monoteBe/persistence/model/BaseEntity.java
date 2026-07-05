@@ -1,4 +1,4 @@
-package com.yozakuraMinato.monoteBe.persistence.entity;
+package com.yozakuraMinato.monoteBe.persistence.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
@@ -23,6 +23,7 @@ public abstract class BaseEntity {
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
+
     @CreatedBy
     @Column(name = "created_by", nullable = false, updatable = false)
     private UUID createdBy;
@@ -30,13 +31,12 @@ public abstract class BaseEntity {
     @LastModifiedDate
     @Column(name = "updated_at", insertable = false)
     private Instant updatedAt;
+
     @LastModifiedBy
     @Column(name = "updated_by", insertable = false)
     private UUID updatedBy;
 
-    @Column(name = "deleted_at", insertable = false)
-    private Instant deletedAt;
-    @Column(name = "deleted_by", insertable = false)
-    private UUID deletedBy;
+    @Column(name = "is_deleted", nullable = false)
+    private boolean isDeleted = false;
 
 }

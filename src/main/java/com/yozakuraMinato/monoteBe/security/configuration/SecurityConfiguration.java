@@ -27,7 +27,6 @@ public class SecurityConfiguration {
     private final UserDetailsService userDetailsService;
 
     private final PasswordEncoder passwordEncoder;
-
     private final JwtFilter jwtFilter;
 
     @Bean

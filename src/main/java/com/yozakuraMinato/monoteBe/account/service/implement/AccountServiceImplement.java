@@ -1,24 +1,25 @@
 package com.yozakuraMinato.monoteBe.account.service.implement;
 
+import com.yozakuraMinato.monoteBe.account.constant.AccountMessage;
 import com.yozakuraMinato.monoteBe.account.controller.dto.AccountMasterRequest;
 import com.yozakuraMinato.monoteBe.account.controller.dto.AccountMasterResponse;
 import com.yozakuraMinato.monoteBe.account.controller.dto.AccountUpdateRequest;
 import com.yozakuraMinato.monoteBe.account.repository.AccountRepository;
 import com.yozakuraMinato.monoteBe.account.repository.model.Account;
 import com.yozakuraMinato.monoteBe.account.repository.projection.AccountProjection;
+import com.yozakuraMinato.monoteBe.account.repository.type.AccountStatus;
 import com.yozakuraMinato.monoteBe.account.service.AccountApplicationService;
-import com.yozakuraMinato.monoteBe.account.shared.AccountMapper;
-import com.yozakuraMinato.monoteBe.account.shared.AccountMessage;
-import com.yozakuraMinato.monoteBe.account.shared.type.AccountStatus;
-import com.yozakuraMinato.monoteBe.security.service.SecurityContextApiService;
+import com.yozakuraMinato.monoteBe.account.util.AccountMapper;
+import com.yozakuraMinato.monoteBe.common.exception.ResourceConflictException;
+import com.yozakuraMinato.monoteBe.common.exception.ResourceNotFoundException;
+import com.yozakuraMinato.monoteBe.user.service.UserContextApiService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.time.Instant;
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -26,83 +27,65 @@ import java.util.UUID;
 public class AccountServiceImplement implements AccountApplicationService {
 
     private final AccountRepository accountRepository;
-
     private final AccountMapper accountMapper;
 
-    private final SecurityContextApiService securityContextApiService;
+    private final UserContextApiService userContextApiService;
 
     @Override
-    public void createAccount(AccountMasterRequest accountMasterRequest) {
-        UUID userId = securityContextApiService
-                .getUserId()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, AccountMessage.UserId.isNull));
-
-        boolean isNameExists = accountRepository.existsByNameAndUserId(accountMasterRequest.name(), userId);
-        if(isNameExists) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, AccountMessage.Name.alreadyExists);
-        }
+    public void createAccount(AccountMasterRequest accountMasterRequest, UUID userId) {
+        boolean isNameConflict = accountRepository.existsByNameAndUserId(accountMasterRequest.name(), userId);
+        if(isNameConflict) throw new ResourceConflictException(AccountMessage.Name.ALREADY_EXISTS);
 
         Account newAccount = accountMapper.masterRequestToEntity(accountMasterRequest);
         newAccount.setUserId(userId);
         newAccount.setStatus(AccountStatus.ACTIVATE);
         newAccount.setBalance(BigDecimal.ZERO);
+
         accountRepository.save(newAccount);
     }
 
     @Override
-    public AccountMasterResponse getAccountById(UUID id) {
-        UUID userId = securityContextApiService
-                .getUserId()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, AccountMessage.UserId.isNull));
-
+    public AccountMasterResponse getAccountById(UUID id, UUID userId) {
         AccountProjection existsAccount = accountRepository
                 .findProjectionByIdAndUserId(id, userId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, AccountMessage.Id.notFound));
+                .orElseThrow(() -> new ResourceNotFoundException(AccountMessage.Id.NOT_FOUND));
+
         return accountMapper.projectionToMasterResponse(existsAccount);
     }
 
     @Override
-    public List<AccountMasterResponse> getAllAccounts() {
-        UUID userId = securityContextApiService
-                .getUserId()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, AccountMessage.UserId.isNull));
+    public Page<AccountMasterResponse> getAllAccounts(Pageable pageable, UUID userId) {
+        Page<AccountProjection> accountPage = accountRepository.findAllProjectionsByUserId(userId, pageable);
 
-        List<AccountProjection> existsAccounts = accountRepository.findProjectionByUserId(userId);
-        return accountMapper.projectionListToMasterResponseList(existsAccounts);
+        return accountPage.map(accountMapper::projectionToMasterResponse);
     }
 
     @Override
-    public void updateAccount(UUID id, AccountUpdateRequest accountUpdateRequest) {
-        UUID userId = securityContextApiService
-                .getUserId()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, AccountMessage.UserId.isNull));
-
+    @Transactional
+    public void updateAccount(UUID id, AccountUpdateRequest accountUpdateRequest, UUID userId) {
         Account accountToUpdate = accountRepository
                 .findByIdAndUserId(id, userId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, AccountMessage.Id.notFound));
+                .orElseThrow(() -> new ResourceNotFoundException(AccountMessage.Id.NOT_FOUND));
 
-        boolean isNameExists = accountRepository.existsByNameAndUserIdAndIdIsNot(accountUpdateRequest.name(), userId, id);
-        if(isNameExists) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, AccountMessage.Name.alreadyExists);
+        if(accountUpdateRequest.name() != null && !accountUpdateRequest.name().equals(accountToUpdate.getName())) {
+            boolean isNameConflict = accountRepository.existsByNameAndUserIdAndIdIsNot(
+                    accountUpdateRequest.name(), userId, id
+            );
+            if(isNameConflict) throw new ResourceConflictException(AccountMessage.Name.ALREADY_EXISTS);
         }
 
         accountMapper.updateEntityFromUpdateRequest(accountUpdateRequest, accountToUpdate);
-        accountRepository.save(accountToUpdate);
     }
 
     @Override
-    public void deleteAccount(UUID id) {
-        UUID userId = securityContextApiService
-                .getUserId()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, AccountMessage.UserId.isNull));
-
-        Account existsAccount = accountRepository
+    @Transactional
+    public void deleteAccount(UUID id, UUID userId) {
+        accountRepository
                 .findByIdAndUserId(id, userId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, AccountMessage.Id.notFound));
-
-        existsAccount.setDeletedAt(Instant.now());
-        existsAccount.setDeletedBy(userId);
-        accountRepository.save(existsAccount);
+                .ifPresentOrElse(
+                        account -> account.setDeleted(true),
+                        () -> { throw new ResourceNotFoundException(AccountMessage.Id.NOT_FOUND); }
+                );
     }
 
 }

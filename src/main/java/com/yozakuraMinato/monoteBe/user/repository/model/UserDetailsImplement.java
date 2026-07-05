@@ -1,8 +1,8 @@
 package com.yozakuraMinato.monoteBe.user.repository.model;
 
 import com.yozakuraMinato.monoteBe.user.repository.projection.UserDetailsProjection;
-import com.yozakuraMinato.monoteBe.user.shared.type.UserRole;
-import org.jspecify.annotations.Nullable;
+import com.yozakuraMinato.monoteBe.user.repository.type.UserRole;
+import org.jspecify.annotations.NullMarked;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,36 +24,43 @@ public class UserDetailsImplement implements UserDetails {
     }
 
     @Override
+    @NullMarked
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singleton(new SimpleGrantedAuthority(UserRole.USER.getDescription()));
     }
 
     @Override
-    public @Nullable String getPassword() {
+    @NullMarked
+    public String getPassword() {
         return userDetailsProjection.hashedPassword();
     }
 
     @Override
+    @NullMarked
     public String getUsername() {
         return userDetailsProjection.email();
     }
 
     @Override
+    @NullMarked
     public boolean isAccountNonExpired() {
         return true;
     }
 
     @Override
+    @NullMarked
     public boolean isAccountNonLocked() {
         return true;
     }
 
     @Override
+    @NullMarked
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
     @Override
+    @NullMarked
     public boolean isEnabled() {
         return true;
     }

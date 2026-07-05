@@ -1,12 +1,13 @@
 package com.yozakuraMinato.monoteBe.persistence.configuration;
 
-import com.yozakuraMinato.monoteBe.security.service.SecurityContextApiService;
+import com.yozakuraMinato.monoteBe.user.service.UserContextApiService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Configuration
@@ -14,11 +15,15 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AuditConfiguration {
 
-    private final SecurityContextApiService securityContextApiService;
+    private final UUID SYSTEM_ID = new UUID(0L, 0L);
+
+    private final UserContextApiService userContextApiService;
 
     @Bean
     public AuditorAware<UUID> auditorProvider() {
-        return securityContextApiService::getUserId;
+        return () -> userContextApiService
+                .getUserId()
+                .or(() -> Optional.of(SYSTEM_ID));
     }
 
 }

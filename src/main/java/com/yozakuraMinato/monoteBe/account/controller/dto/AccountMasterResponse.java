@@ -1,6 +1,6 @@
 package com.yozakuraMinato.monoteBe.account.controller.dto;
 
-import com.yozakuraMinato.monoteBe.account.shared.type.AccountStatus;
+import com.yozakuraMinato.monoteBe.account.repository.type.AccountStatus;
 
 import java.math.BigDecimal;
 import java.util.UUID;

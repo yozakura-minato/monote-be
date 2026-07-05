@@ -1,14 +1,13 @@
-package com.yozakuraMinato.monoteBe.user.shared.type;
+package com.yozakuraMinato.monoteBe.user.repository.type;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum UserStatus {
+public enum UserRole {
 
-    INACTIVE("INACTIVE"),
-    ACTIVATE("ACTIVE");
+    USER("USER");
 
     private final String description;
 
