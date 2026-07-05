@@ -1,9 +1,9 @@
-package com.yozakuraMinato.monoteBe.shared.exception;
+package com.yozakuraMinato.monoteBe.common.exception.handler;
 
-import com.yozakuraMinato.monoteBe.shared.exception.custom.ResourceConflictException;
-import com.yozakuraMinato.monoteBe.shared.exception.custom.ResourceNotFoundException;
-import com.yozakuraMinato.monoteBe.shared.exception.custom.BusinessRuleException;
-import com.yozakuraMinato.monoteBe.shared.wrapper.ApplicationResponse;
+import com.yozakuraMinato.monoteBe.common.exception.BusinessRuleException;
+import com.yozakuraMinato.monoteBe.common.exception.ResourceConflictException;
+import com.yozakuraMinato.monoteBe.common.exception.ResourceNotFoundException;
+import com.yozakuraMinato.monoteBe.common.wrapper.ApplicationResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -11,12 +11,17 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.List;
 
 @ControllerAdvice
 public class GeneralExceptionHandler {
+
+    private final String GENERAL = "general.";
+    private final String INTERNAL_ERROR = GENERAL + "internalError";
+    private final String BAD_REQUEST = GENERAL + "badRequest";
 
     @ExceptionHandler(value = ResourceNotFoundException.class)
     public ResponseEntity<ApplicationResponse<?>> handleResourceNotFoundException(ResourceNotFoundException resourceNotFoundException) {
@@ -42,35 +47,42 @@ public class GeneralExceptionHandler {
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public ResponseEntity<ApplicationResponse<?>> handleMethodArgumentNotValidException(MethodArgumentNotValidException methodArgumentNotValidException) {
         List<FieldError> errors = methodArgumentNotValidException.getFieldErrors();
-        if(errors.isEmpty()) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(ApplicationResponse.error(GeneralMessage.badRequest));
-        }
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(ApplicationResponse.error(errors.getFirst().getDefaultMessage()));
+                .body(ApplicationResponse.error(
+                        errors.isEmpty() ? errors.getFirst().getDefaultMessage() : BAD_REQUEST
+                ));
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<ApplicationResponse<?>> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(ApplicationResponse.error(GeneralMessage.badRequest));
+                .body(ApplicationResponse.error(BAD_REQUEST));
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ApplicationResponse<?>> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(ApplicationResponse.error(GeneralMessage.badRequest));
+                .body(ApplicationResponse.error(BAD_REQUEST));
     }
 
     @ExceptionHandler(value = RuntimeException.class)
     public ResponseEntity<ApplicationResponse<?>> handleRuntimeException(RuntimeException runtimeException) {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(ApplicationResponse.error(GeneralMessage.internalError));
+                .body(ApplicationResponse.error(INTERNAL_ERROR));
+    }
+
+    @ExceptionHandler(value = HandlerMethodValidationException.class)
+    public ResponseEntity<ApplicationResponse<?>> handleHandlerMethodValidationException(HandlerMethodValidationException handlerMethodValidationException) {
+        String message = handlerMethodValidationException.getAllErrors().getFirst().getDefaultMessage();
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ApplicationResponse.error(
+                        message == null || message.isBlank() ? BAD_REQUEST : message
+                ));
     }
 
 }

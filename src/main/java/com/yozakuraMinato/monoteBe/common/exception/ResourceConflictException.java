@@ -1,4 +1,4 @@
-package com.yozakuraMinato.monoteBe.shared.exception.custom;
+package com.yozakuraMinato.monoteBe.common.exception;
 
 public class ResourceConflictException extends RuntimeException {
     public ResourceConflictException(String message) {
