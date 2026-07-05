@@ -20,32 +20,61 @@ import java.util.List;
 public class GeneralExceptionHandler {
 
     private final String GENERAL = "general.";
-    private final String INTERNAL_ERROR = GENERAL + "internalError";
     private final String BAD_REQUEST = GENERAL + "badRequest";
+    private final String INTERNAL_ERROR = GENERAL + "internalError";
 
     @ExceptionHandler(value = ResourceNotFoundException.class)
-    public ResponseEntity<ApplicationResponse<?>> handleResourceNotFoundException(ResourceNotFoundException resourceNotFoundException) {
+    public ResponseEntity<ApplicationResponse<?>> handleResourceNotFoundException(
+            ResourceNotFoundException resourceNotFoundException
+    ) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(ApplicationResponse.error(resourceNotFoundException.getMessage()));
     }
 
     @ExceptionHandler(value = ResourceConflictException.class)
-    public ResponseEntity<ApplicationResponse<?>> handleResourceConflictException(ResourceConflictException resourceConflictException) {
+    public ResponseEntity<ApplicationResponse<?>> handleResourceConflictException(
+            ResourceConflictException resourceConflictException
+    ) {
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
                 .body(ApplicationResponse.error(resourceConflictException.getMessage()));
     }
 
     @ExceptionHandler(value = BusinessRuleException.class)
-    public ResponseEntity<ApplicationResponse<?>> handleBusinessRuleException(BusinessRuleException businessRuleException) {
+    public ResponseEntity<ApplicationResponse<?>> handleBusinessRuleException(
+            BusinessRuleException businessRuleException
+    ) {
         return ResponseEntity
                 .status(HttpStatus.UNPROCESSABLE_CONTENT)
                 .body(ApplicationResponse.error(businessRuleException.getMessage()));
     }
 
+    @ExceptionHandler(value = HandlerMethodValidationException.class)
+    public ResponseEntity<ApplicationResponse<?>> handleHandlerMethodValidationException(
+            HandlerMethodValidationException handlerMethodValidationException
+    ) {
+        String message = handlerMethodValidationException.getAllErrors().getFirst().getDefaultMessage();
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ApplicationResponse.error(
+                        message == null || message.isBlank() ? BAD_REQUEST : message
+                ));
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ApplicationResponse<?>> handleHttpMessageNotReadableException(
+            HttpMessageNotReadableException httpMessageNotReadableException
+    ) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ApplicationResponse.error(BAD_REQUEST));
+    }
+
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    public ResponseEntity<ApplicationResponse<?>> handleMethodArgumentNotValidException(MethodArgumentNotValidException methodArgumentNotValidException) {
+    public ResponseEntity<ApplicationResponse<?>> handleMethodArgumentNotValidException(
+            MethodArgumentNotValidException methodArgumentNotValidException
+    ) {
         List<FieldError> errors = methodArgumentNotValidException.getFieldErrors();
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
@@ -55,34 +84,21 @@ public class GeneralExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<ApplicationResponse<?>> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(ApplicationResponse.error(BAD_REQUEST));
-    }
-
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ApplicationResponse<?>> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
+    public ResponseEntity<ApplicationResponse<?>> handleMethodArgumentTypeMismatchException(
+            MethodArgumentTypeMismatchException methodArgumentTypeMismatchException
+    ) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(ApplicationResponse.error(BAD_REQUEST));
     }
 
     @ExceptionHandler(value = RuntimeException.class)
-    public ResponseEntity<ApplicationResponse<?>> handleRuntimeException(RuntimeException runtimeException) {
+    public ResponseEntity<ApplicationResponse<?>> handleRuntimeException(
+            RuntimeException runtimeException
+    ) {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ApplicationResponse.error(INTERNAL_ERROR));
-    }
-
-    @ExceptionHandler(value = HandlerMethodValidationException.class)
-    public ResponseEntity<ApplicationResponse<?>> handleHandlerMethodValidationException(HandlerMethodValidationException handlerMethodValidationException) {
-        String message = handlerMethodValidationException.getAllErrors().getFirst().getDefaultMessage();
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(ApplicationResponse.error(
-                        message == null || message.isBlank() ? BAD_REQUEST : message
-                ));
     }
 
 }

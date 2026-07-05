@@ -32,11 +32,10 @@ public class PageableSizeValidator implements ConstraintValidator<HasValidPageSi
 
         if (!isValid) {
             constraintValidatorContext.disableDefaultConstraintViolation();
-            constraintValidatorContext
-                    .buildConstraintViolationWithTemplate(message)
-                    .addConstraintViolation();
+            constraintValidatorContext.buildConstraintViolationWithTemplate(message).addConstraintViolation();
         }
 
         return isValid;
     }
+
 }
