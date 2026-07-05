@@ -7,6 +7,7 @@ import com.yozakuraMinato.monoteBe.common.wrapper.ApplicationResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -20,7 +21,8 @@ import java.util.List;
 public class GeneralExceptionHandler {
 
     private final String BAD_REQUEST = "general.badRequest";
-    private final String INTERNAL_ERROR = "general.internalError";
+    private final String UNAUTHORIZED = "general.unauthorized";
+    private final String INTERNAL_SERVER_ERROR = "general.internalServerError";
 
     @ExceptionHandler(value = ResourceNotFoundException.class)
     public ResponseEntity<ApplicationResponse<?>> handleResourceNotFoundException(
@@ -78,7 +80,7 @@ public class GeneralExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(ApplicationResponse.error(
-                        errors.isEmpty() ? errors.getFirst().getDefaultMessage() : BAD_REQUEST
+                        errors.isEmpty() ? BAD_REQUEST : errors.getFirst().getDefaultMessage()
                 ));
     }
 
@@ -91,13 +93,22 @@ public class GeneralExceptionHandler {
                 .body(ApplicationResponse.error(BAD_REQUEST));
     }
 
+    @ExceptionHandler(value = BadCredentialsException.class)
+    public ResponseEntity<ApplicationResponse<?>> handleBadCredentialsException (
+            BadCredentialsException badCredentialsException
+    ) {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(ApplicationResponse.error(UNAUTHORIZED));
+    }
+
     @ExceptionHandler(value = RuntimeException.class)
     public ResponseEntity<ApplicationResponse<?>> handleRuntimeException(
             RuntimeException runtimeException
     ) {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(ApplicationResponse.error(INTERNAL_ERROR));
+                .body(ApplicationResponse.error(INTERNAL_SERVER_ERROR));
     }
 
 }

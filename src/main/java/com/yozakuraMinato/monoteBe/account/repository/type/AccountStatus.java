@@ -1,4 +1,4 @@
-package com.yozakuraMinato.monoteBe.account.type;
+package com.yozakuraMinato.monoteBe.account.repository.type;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

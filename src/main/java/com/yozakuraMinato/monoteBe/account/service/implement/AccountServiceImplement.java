@@ -7,7 +7,7 @@ import com.yozakuraMinato.monoteBe.account.controller.dto.AccountUpdateRequest;
 import com.yozakuraMinato.monoteBe.account.repository.AccountRepository;
 import com.yozakuraMinato.monoteBe.account.repository.model.Account;
 import com.yozakuraMinato.monoteBe.account.repository.projection.AccountProjection;
-import com.yozakuraMinato.monoteBe.account.type.AccountStatus;
+import com.yozakuraMinato.monoteBe.account.repository.type.AccountStatus;
 import com.yozakuraMinato.monoteBe.account.service.AccountApplicationService;
 import com.yozakuraMinato.monoteBe.account.util.AccountMapper;
 import com.yozakuraMinato.monoteBe.common.exception.ResourceConflictException;
