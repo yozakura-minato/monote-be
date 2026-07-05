@@ -9,29 +9,26 @@ create table users(
     status varchar(50) not null,
 
     created_at timestamptz not null,
-    created_by uuid,
+    created_by uuid not null,
     updated_at timestamptz,
     updated_by uuid,
-    deleted_at timestamptz,
-    deleted_by uuid,
+    is_deleted boolean not null,
 
     constraint chk_completed_update_audit_fields
-		check ((updated_at is null) = (updated_by is null)),
-    constraint chk_completed_delete_audit_fields
-    	check ((deleted_at is null) = ( deleted_by is null))
+		check ((updated_at is null) = (updated_by is null))
 );
 
 create unique index idx_unique_user_email
 	on users(email)
-	where (deleted_at is null and deleted_by is null);
+	where is_deleted = false;
 
 create unique index idx_unique_user_google_id
     on users(google_id)
-	where (deleted_at is null and deleted_by is null);
+	where is_deleted = false;
 ------------------------------------------------------------------------------------------------------------------------
 
 create table accounts(
-    id bigint generated always as identity primary key,
+    id uuid primary key,
     user_id uuid not null,						
 
     name varchar(100) not null,					
@@ -43,22 +40,19 @@ create table accounts(
     created_by uuid not null,
     updated_at timestamptz,
     updated_by uuid,
-    deleted_at timestamptz,
-    deleted_by uuid,
+    is_deleted boolean not null,
 
     constraint fk_user_id_ref_user
     	foreign key (user_id)
     	references users(id),
     	
     constraint chk_completed_update_audit_fields
-    	check ((updated_at is null) = (updated_by is null)),
-    constraint chk_completed_delete_audit_fields
-    	check ((deleted_at is null) = ( deleted_by is null))
+    	check ((updated_at is null) = (updated_by is null))
 );
 
 create unique index idx_unique_account_name
     on accounts(name, user_id)
-	where (deleted_at is null and deleted_by is null);
+	where is_deleted = false;
 ------------------------------------------------------------------------------------------------------------------------
 
 create table categories(
@@ -72,29 +66,26 @@ create table categories(
     created_by uuid not null,
     updated_at timestamptz,
     updated_by uuid,
-    deleted_at timestamptz,
-    deleted_by uuid,
+    is_deleted boolean not null,
 
     constraint fk_user_id_ref_user
 		foreign key (user_id)
 		references users(id),
 		
     constraint chk_completed_update_audit_fields
-		check ((updated_at is null) = (updated_by is null)),
-    constraint chk_completed_delete_audit_fields
-		check ((deleted_at is null) = ( deleted_by is null))
+		check ((updated_at is null) = (updated_by is null))
 );
 
 create unique index idx_unique_category_name
     on categories(name, user_id)
-	where (deleted_at is null and deleted_by is null);
+	where is_deleted = false;
 ------------------------------------------------------------------------------------------------------------------------
 
 create table tracking_periods(
     id bigint generated always as identity primary key,
     user_id uuid not null,
-    source_account bigint,
-	auto_fill_destination_account bigint,
+    source_account uuid,
+	auto_fill_destination_account uuid,
 
     name varchar(100) not null,
     description text,
@@ -107,8 +98,7 @@ create table tracking_periods(
     created_by uuid not null,
     updated_at timestamptz,
     updated_by uuid,
-    deleted_at timestamptz,
-    deleted_by uuid,
+    is_deleted boolean not null,
 
     constraint fk_user_id_ref_user
     	foreign key (user_id)
@@ -121,21 +111,19 @@ create table tracking_periods(
     	references accounts(id),
     	
     constraint chk_complete_update_audit_fields
-    	check ((updated_at is null) = (updated_by is null)),
-    constraint chk_complete_delete_audit_fields
-    	check ((deleted_at is null) = ( deleted_by is null))
+    	check ((updated_at is null) = (updated_by is null))
 );
 
 create unique index idx_unique_budget_name_and_type
     on tracking_periods(name, type, user_id)
-	where (deleted_at is null and deleted_by is null);
+	where is_deleted = false;
 ------------------------------------------------------------------------------------------------------------------------
 
 create table allocations(
 	id bigint generated always as identity primary key,
 	user_id uuid not null,
     period_id bigint not null,
-    account_id bigint not null,
+    account_id uuid not null,
     category_id bigint not null,
 
     frequency integer not null,
@@ -146,8 +134,7 @@ create table allocations(
     created_by uuid not null,
     updated_at timestamptz,
     updated_by uuid,
-    deleted_at timestamptz,
-    deleted_by uuid,
+    is_deleted boolean not null,
 
     constraint fk_user_id_ref_user
     	foreign key (user_id)
@@ -163,21 +150,19 @@ create table allocations(
     	references categories(id),
     
     constraint chk_completed_updated_audit_fields
-    	check ((updated_at is null) = (updated_by is null)),
-    constraint chk_completed_deleted_audit_fields
-    	check ((deleted_at is null) = ( deleted_by is null))
+    	check ((updated_at is null) = (updated_by is null))
 );
 
 create unique index idx_unique_category_allocation_category_id
     on allocations(user_id, period_id desc, account_id, category_id)
-	where (deleted_at is null and deleted_by is null);
+	where is_deleted = false;
 ------------------------------------------------------------------------------------------------------------------------
 
 create table transactions(
 	id uuid primary key,
     user_id uuid not null,
-    source_account_id bigint,
-    destination_account_id bigint,
+    source_account_id uuid,
+    destination_account_id uuid,
     category_id bigint,
     allocation_id bigint,
     period_id bigint,
@@ -194,8 +179,7 @@ create table transactions(
     created_by uuid not null,
     updated_at timestamptz,
     updated_by uuid,
-    deleted_at timestamptz,
-    deleted_by uuid,
+    is_deleted boolean not null,
 
     constraint fk_user_id_ref_user
     	foreign key (user_id)
@@ -219,11 +203,9 @@ create table transactions(
     constraint chk_not_null_account_fields
     	check ((source_account_id is not null) or (destination_account_id is not null)),
     constraint chk_completed_update_audit_fields
-		check ((updated_at is null) = (updated_by is null)),
-    constraint chk_completed_delete_audit_fields
-    	check ((deleted_at is null) = ( deleted_by is null))
+		check ((updated_at is null) = (updated_by is null))
 );
 
 create index idx_sort_transaction_history
     on transactions(user_id, transaction_date desc, daily_sequence desc)
-	where (deleted_at is null and deleted_by is null);
+	where is_deleted = false;

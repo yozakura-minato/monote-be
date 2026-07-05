@@ -22,7 +22,6 @@ public class JwtServiceImplement implements JwtApiService, JwtApplicationService
 
     @Value("${security.jwt.key-algorithm}")
     private String keyAlgorithm;
-
     @Value("${security.jwt.access-token-expiration}")
     private int accessTokenExpiration;
 
@@ -47,14 +46,20 @@ public class JwtServiceImplement implements JwtApiService, JwtApplicationService
                 .and().signWith(getKey()).compact();
     }
 
-    private SecretKey getKey() {
-        byte keyBytes[] = Decoders.BASE64.decode(secretKey);
-        return Keys.hmacShaKeyFor(keyBytes);
-    }
-
     @Override
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
+    }
+
+    @Override
+    public boolean validateToken(String token, UserDetails userDetails) {
+        final String userName = extractUsername(token);
+        return (userName.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    }
+
+    private SecretKey getKey() {
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> claimResolver) {
@@ -68,12 +73,6 @@ public class JwtServiceImplement implements JwtApiService, JwtApplicationService
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
-    }
-
-    @Override
-    public boolean validateToken(String token, UserDetails userDetails) {
-        final String userName = extractUsername(token);
-        return (userName.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
     private boolean isTokenExpired(String token) {
