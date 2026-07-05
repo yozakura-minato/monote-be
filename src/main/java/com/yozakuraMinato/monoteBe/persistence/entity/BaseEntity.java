@@ -23,6 +23,7 @@ public abstract class BaseEntity {
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
+
     @CreatedBy
     @Column(name = "created_by", nullable = false, updatable = false)
     private UUID createdBy;
@@ -30,6 +31,7 @@ public abstract class BaseEntity {
     @LastModifiedDate
     @Column(name = "updated_at", insertable = false)
     private Instant updatedAt;
+
     @LastModifiedBy
     @Column(name = "updated_by", insertable = false)
     private UUID updatedBy;
