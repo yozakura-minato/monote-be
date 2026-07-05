@@ -2,28 +2,28 @@ package com.yozakuraMinato.monoteBe.account;
 
 public class AccountMessage {
 
-    private static final String account = "account.";
-    private static final String id = account + "id.";
-    private static final String userId = account + "userId.";
-    private static final String name = account + "name.";
-    private static final String status = account + "status.";
+    private static final String ACCOUNT = "account.";
+    private static final String ID = ACCOUNT + "id.";
+    private static final String USER_ID = ACCOUNT + "userId.";
+    private static final String NAME = ACCOUNT + "name.";
+    private static final String STATUS = ACCOUNT + "status.";
 
     public static class Id {
-        public static final String notFound = id + "notFound";
+        public static final String NOT_FOUND = ID + "notFound";
     }
 
     public static class UserId {
-        public static final String isNull = userId + "isNull";
+        public static final String IS_NULL = USER_ID + "isNull";
     }
 
     public static class Name {
-        public static final String isNull = name + "isNull";
-        public static final String alreadyExists = name + "alreadyExists";
-        public static final String hasInvalidSize = name + "hasInvalidSize";
+        public static final String IS_NULL = NAME + "isNull";
+        public static final String ALREADY_EXISTS = NAME + "alreadyExists";
+        public static final String HAS_INVALID_SIZE = NAME + "hasInvalidSize";
     }
 
     public static class Status {
-        public static final String isNull = status + "isNull";
+        public static final String IS_NULL = STATUS + "isNull";
     }
 
 }

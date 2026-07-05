@@ -3,7 +3,7 @@ package com.yozakuraMinato.monoteBe.account;
 public class AccountConstant {
 
     public static class Name {
-        public static final int maximalSize = 32;
+        public static final int MAXIMAL_SIZE = 32;
     }
 
 }
