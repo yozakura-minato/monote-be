@@ -1,4 +1,4 @@
-package com.yozakuraMinato.monoteBe.user.controller.dto;
+package com.yozakuraMinato.monoteBe.user.dto;
 
 public record SignInResponse(
 

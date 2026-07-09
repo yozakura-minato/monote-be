@@ -1,4 +1,4 @@
-package com.yozakuraMinato.monoteBe.persistence.model;
+package com.yozakuraMinato.monoteBe.persistence.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

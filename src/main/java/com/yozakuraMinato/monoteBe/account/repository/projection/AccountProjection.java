@@ -1,6 +1,6 @@
 package com.yozakuraMinato.monoteBe.account.repository.projection;
 
-import com.yozakuraMinato.monoteBe.account.repository.type.AccountStatus;
+import com.yozakuraMinato.monoteBe.account.domain.type.AccountStatus;
 
 import java.math.BigDecimal;
 import java.util.UUID;
