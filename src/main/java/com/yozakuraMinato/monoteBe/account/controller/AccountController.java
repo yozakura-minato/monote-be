@@ -5,15 +5,12 @@ import com.yozakuraMinato.monoteBe.account.dto.AccountMasterResponse;
 import com.yozakuraMinato.monoteBe.account.dto.AccountUpdateRequest;
 import com.yozakuraMinato.monoteBe.account.service.AccountApplicationService;
 import com.yozakuraMinato.monoteBe.common.annotation.CurrentUserId;
-import com.yozakuraMinato.monoteBe.common.constant.CommonMessage;
-import com.yozakuraMinato.monoteBe.common.annotation.HasValidPageSize;
-import com.yozakuraMinato.monoteBe.common.wrapper.ApplicationResponse;
+import com.yozakuraMinato.monoteBe.common.dto.ApplicationResponse;
+import com.yozakuraMinato.monoteBe.common.dto.PaginationRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +21,6 @@ import java.util.UUID;
 @RequestMapping("/accounts")
 @RequiredArgsConstructor
 public class AccountController {
-
-    private static final String DEFAULT_SORT_FIELD = "id";
 
     private final AccountApplicationService accountApplicationService;
 
@@ -46,18 +41,11 @@ public class AccountController {
     }
 
     @GetMapping
-    public ResponseEntity<ApplicationResponse<Page<AccountMasterResponse>>> getAllAccounts(
-            @HasValidPageSize(message = CommonMessage.Pageable.HAS_INVALID_SIZE) Pageable pageable,
-            @CurrentUserId UUID userId
+    public ResponseEntity<ApplicationResponse<PagedModel<EntityModel<AccountMasterResponse>>>> getAllAccounts(
+            PaginationRequest paginationRequest, @CurrentUserId UUID userId
     ) {
-        Pageable pageRequest = PageRequest.of(
-                pageable.getPageNumber(),
-                pageable.getPageSize(),
-                pageable.getSortOr(Sort.by(DEFAULT_SORT_FIELD).ascending())
-        );
-
-        Page<AccountMasterResponse> accountMasterResponseList = accountApplicationService
-                .getAllAccounts(pageRequest, userId);
+        PagedModel<EntityModel<AccountMasterResponse>> accountMasterResponseList = accountApplicationService
+                .getAllAccounts(paginationRequest, userId);
         return ResponseEntity.ok(ApplicationResponse.data(accountMasterResponseList));
     }
 

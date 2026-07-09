@@ -1,9 +1,10 @@
 package com.yozakuraMinato.monoteBe.common.exception.handler;
 
+import com.yozakuraMinato.monoteBe.common.dto.ApplicationResponse;
 import com.yozakuraMinato.monoteBe.common.exception.BusinessRuleException;
 import com.yozakuraMinato.monoteBe.common.exception.ResourceConflictException;
 import com.yozakuraMinato.monoteBe.common.exception.ResourceNotFoundException;
-import com.yozakuraMinato.monoteBe.common.wrapper.ApplicationResponse;
+import org.springframework.beans.BeanInstantiationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -91,6 +92,24 @@ public class GeneralExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(ApplicationResponse.error(BAD_REQUEST));
+    }
+
+    @ExceptionHandler(BeanInstantiationException.class)
+    public ResponseEntity<ApplicationResponse<?>> handleBeanInstantiationException (
+            BeanInstantiationException beanInstantiationException
+    ) {
+        Throwable rootCause = beanInstantiationException.getMostSpecificCause();
+
+        if (rootCause instanceof IllegalArgumentException) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(ApplicationResponse.error(rootCause.getMessage())
+            );
+        }
+
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ApplicationResponse.error(INTERNAL_SERVER_ERROR));
     }
 
     @ExceptionHandler(value = BadCredentialsException.class)

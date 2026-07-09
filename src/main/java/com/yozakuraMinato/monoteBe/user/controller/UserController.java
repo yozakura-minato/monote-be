@@ -1,6 +1,6 @@
 package com.yozakuraMinato.monoteBe.user.controller;
 
-import com.yozakuraMinato.monoteBe.common.wrapper.ApplicationResponse;
+import com.yozakuraMinato.monoteBe.common.dto.ApplicationResponse;
 import com.yozakuraMinato.monoteBe.user.dto.SignInRequest;
 import com.yozakuraMinato.monoteBe.user.dto.SignInResponse;
 import com.yozakuraMinato.monoteBe.user.dto.SignUpRequest;

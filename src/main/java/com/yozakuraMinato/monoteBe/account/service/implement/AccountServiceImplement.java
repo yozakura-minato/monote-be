@@ -10,20 +10,27 @@ import com.yozakuraMinato.monoteBe.account.repository.AccountRepository;
 import com.yozakuraMinato.monoteBe.account.repository.projection.AccountProjection;
 import com.yozakuraMinato.monoteBe.account.service.AccountApplicationService;
 import com.yozakuraMinato.monoteBe.account.util.AccountMapper;
+import com.yozakuraMinato.monoteBe.common.dto.PaginationRequest;
 import com.yozakuraMinato.monoteBe.common.exception.ResourceConflictException;
 import com.yozakuraMinato.monoteBe.common.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class AccountServiceImplement implements AccountApplicationService {
+
+    private final PagedResourcesAssembler<AccountMasterResponse> pagedResourcesAssembler;
 
     private final AccountRepository accountRepository;
     private final AccountMapper accountMapper;
@@ -51,10 +58,12 @@ public class AccountServiceImplement implements AccountApplicationService {
     }
 
     @Override
-    public Page<AccountMasterResponse> getAllAccounts(Pageable pageable, UUID userId) {
-        Page<AccountProjection> accountPage = accountRepository.findAllProjectionsByUserId(userId, pageable);
+    public PagedModel<EntityModel<AccountMasterResponse>> getAllAccounts(PaginationRequest paginationRequest, UUID userId) {
+        Page<AccountProjection> accountPage = accountRepository
+                .findAllProjectionsByUserId(userId, paginationRequest.toPageable());
 
-        return accountPage.map(accountMapper::projectionToMasterResponse);
+        Page<AccountMasterResponse> responsePage = accountPage.map(accountMapper::projectionToMasterResponse);
+        return pagedResourcesAssembler.toModel(responsePage);
     }
 
     @Override
@@ -77,12 +86,10 @@ public class AccountServiceImplement implements AccountApplicationService {
     @Override
     @Transactional
     public void deleteAccount(UUID id, UUID userId) {
-        accountRepository
-                .findByIdAndUserId(id, userId)
-                .ifPresentOrElse(
-                        account -> account.setDeleted(true),
-                        () -> { throw new ResourceNotFoundException(AccountMessage.Id.NOT_FOUND); }
-                );
+        boolean isAccountExists = accountRepository.existsByIdAndUserId(id, userId);
+        if(!isAccountExists) throw new ResourceNotFoundException(AccountMessage.Id.NOT_FOUND);
+
+        accountRepository.deleteByByIdAndUserId(id, userId, Instant.now(), userId);
     }
 
 }
