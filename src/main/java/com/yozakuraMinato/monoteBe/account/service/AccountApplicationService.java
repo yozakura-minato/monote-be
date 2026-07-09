@@ -1,8 +1,8 @@
 package com.yozakuraMinato.monoteBe.account.service;
 
-import com.yozakuraMinato.monoteBe.account.controller.dto.AccountMasterRequest;
-import com.yozakuraMinato.monoteBe.account.controller.dto.AccountMasterResponse;
-import com.yozakuraMinato.monoteBe.account.controller.dto.AccountUpdateRequest;
+import com.yozakuraMinato.monoteBe.account.dto.AccountMasterRequest;
+import com.yozakuraMinato.monoteBe.account.dto.AccountMasterResponse;
+import com.yozakuraMinato.monoteBe.account.dto.AccountUpdateRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

@@ -1,8 +1,8 @@
 package com.yozakuraMinato.monoteBe.account.controller;
 
-import com.yozakuraMinato.monoteBe.account.controller.dto.AccountMasterRequest;
-import com.yozakuraMinato.monoteBe.account.controller.dto.AccountMasterResponse;
-import com.yozakuraMinato.monoteBe.account.controller.dto.AccountUpdateRequest;
+import com.yozakuraMinato.monoteBe.account.dto.AccountMasterRequest;
+import com.yozakuraMinato.monoteBe.account.dto.AccountMasterResponse;
+import com.yozakuraMinato.monoteBe.account.dto.AccountUpdateRequest;
 import com.yozakuraMinato.monoteBe.account.service.AccountApplicationService;
 import com.yozakuraMinato.monoteBe.common.annotation.CurrentUserId;
 import com.yozakuraMinato.monoteBe.common.constant.CommonMessage;

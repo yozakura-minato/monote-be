@@ -1,4 +1,4 @@
-package com.yozakuraMinato.monoteBe.user.controller.dto;
+package com.yozakuraMinato.monoteBe.user.dto;
 
 import com.yozakuraMinato.monoteBe.common.annotation.NormalizedEmail;
 import com.yozakuraMinato.monoteBe.common.annotation.NormalizedString;

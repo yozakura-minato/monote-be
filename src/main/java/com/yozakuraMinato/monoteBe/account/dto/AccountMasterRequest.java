@@ -1,13 +1,12 @@
-package com.yozakuraMinato.monoteBe.account.controller.dto;
+package com.yozakuraMinato.monoteBe.account.dto;
 
 import com.yozakuraMinato.monoteBe.account.constant.AccountConstant;
 import com.yozakuraMinato.monoteBe.account.constant.AccountMessage;
-import com.yozakuraMinato.monoteBe.account.repository.type.AccountStatus;
 import com.yozakuraMinato.monoteBe.common.annotation.NormalizedString;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-public record AccountUpdateRequest(
+public record AccountMasterRequest(
 
         @NormalizedString
         @NotNull(message = AccountMessage.Name.IS_NULL)
@@ -15,9 +14,6 @@ public record AccountUpdateRequest(
         String name,
 
         @NormalizedString
-        String description,
-
-        @NotNull(message = AccountMessage.Status.IS_NULL)
-        AccountStatus status
+        String description
 
 ) {}

@@ -1,8 +1,8 @@
-package com.yozakuraMinato.monoteBe.user.repository.model;
+package com.yozakuraMinato.monoteBe.user.domain;
 
-import com.yozakuraMinato.monoteBe.persistence.model.BaseEntity;
-import com.yozakuraMinato.monoteBe.user.repository.type.UserRole;
-import com.yozakuraMinato.monoteBe.user.repository.type.UserStatus;
+import com.yozakuraMinato.monoteBe.persistence.domain.BaseEntity;
+import com.yozakuraMinato.monoteBe.user.domain.type.UserRole;
+import com.yozakuraMinato.monoteBe.user.domain.type.UserStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

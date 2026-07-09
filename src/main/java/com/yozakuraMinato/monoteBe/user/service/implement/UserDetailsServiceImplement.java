@@ -1,10 +1,10 @@
 package com.yozakuraMinato.monoteBe.user.service.implement;
 
 import com.yozakuraMinato.monoteBe.user.repository.UserRepository;
-import com.yozakuraMinato.monoteBe.user.repository.model.UserDetailsImplement;
+import com.yozakuraMinato.monoteBe.user.domain.UserDetailsImplement;
 import com.yozakuraMinato.monoteBe.user.repository.projection.UserDetailsProjection;
 import com.yozakuraMinato.monoteBe.user.constant.UserMessage;
-import com.yozakuraMinato.monoteBe.user.repository.type.UserStatus;
+import com.yozakuraMinato.monoteBe.user.domain.type.UserStatus;
 import com.yozakuraMinato.monoteBe.user.service.UserDetailsApiService;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NullMarked;
