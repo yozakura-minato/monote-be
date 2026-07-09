@@ -1,4 +1,4 @@
-package com.yozakuraMinato.monoteBe.common.wrapper;
+package com.yozakuraMinato.monoteBe.common.dto;
 
 public record ApplicationResponse<T>(
 
