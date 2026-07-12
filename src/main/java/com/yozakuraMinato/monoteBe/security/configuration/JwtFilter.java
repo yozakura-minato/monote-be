@@ -1,7 +1,7 @@
 package com.yozakuraMinato.monoteBe.security.configuration;
 
 import com.yozakuraMinato.monoteBe.security.service.JwtApplicationService;
-import com.yozakuraMinato.monoteBe.user.service.UserDetailsApiService;
+import com.yozakuraMinato.monoteBe.user.service.UserDetailsModuleService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -49,7 +49,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = applicationContext
-                    .getBean(UserDetailsApiService.class)
+                    .getBean(UserDetailsModuleService.class)
                     .loadUserByUsername(username);
 
             if (jwtApplicationService.validateToken(token, userDetails)) {

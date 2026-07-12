@@ -24,8 +24,45 @@ The main goal is to help user take full control of their financial health and ac
 ### Entity-relationship diagram
 ![alt text](./docs/erd.png)
 
-### API document
-*Updating...*
+### Project structure
+```
+monoteBe
+├── security
+├── common
+├── persistence
+└── module
+    ├── domain
+    │   ├── type
+    │   │   └── Enum.java    
+    │   └── Entity.java
+    ├── repository
+    │   ├── projection
+    │   │   └── Projection.java    
+    │   └── Repository.java
+    ├── service
+    │   ├── payload
+    │   │   ├── Request.java
+    │   │   └── Response.java    
+    │   ├── implement
+    │   │   └── ServiceImplement.java    
+    │   ├── ApplicationService.java
+    │   ├── ModuleService.java
+    │   └── EventService.java
+    ├── controller
+    │   ├── payload
+    │   │   ├── Request.java
+    │   │   └── Response.java
+    │   └── Controller.java
+    ├── event
+    │   ├── payload
+    │   │   └── Event.java
+    │   ├── EventListener.java
+    │   └── EventPublisher.java
+    └── shared
+        ├── Mapper.java
+        ├── Constant.java
+        └── Message.java
+```
 
 ### Getting started
 1. Clone or download the repository.

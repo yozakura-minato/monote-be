@@ -1,10 +1,10 @@
 package com.yozakuraMinato.monoteBe.user.service.implement;
 
 import com.yozakuraMinato.monoteBe.common.exception.ResourceConflictException;
-import com.yozakuraMinato.monoteBe.security.service.JwtApiService;
-import com.yozakuraMinato.monoteBe.user.controller.applicationPayload.SignInRequest;
-import com.yozakuraMinato.monoteBe.user.controller.applicationPayload.SignInResponse;
-import com.yozakuraMinato.monoteBe.user.controller.applicationPayload.SignUpRequest;
+import com.yozakuraMinato.monoteBe.security.service.JwtModuleService;
+import com.yozakuraMinato.monoteBe.user.controller.payload.SignInRequest;
+import com.yozakuraMinato.monoteBe.user.controller.payload.SignInResponse;
+import com.yozakuraMinato.monoteBe.user.controller.payload.SignUpRequest;
 import com.yozakuraMinato.monoteBe.user.repository.UserRepository;
 import com.yozakuraMinato.monoteBe.user.domain.User;
 import com.yozakuraMinato.monoteBe.user.domain.UserDetailsImplement;
@@ -30,7 +30,7 @@ public class UserServiceImplement implements UserApplicationService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-    private final JwtApiService jwtApiService;
+    private final JwtModuleService jwtModuleService;
 
     @Override
     public void signUp(SignUpRequest signUpRequest) {
@@ -53,7 +53,7 @@ public class UserServiceImplement implements UserApplicationService {
         UserDetailsImplement userDetailsImplement = (UserDetailsImplement) authentication.getPrincipal();
         String accessToken = null;
         if (userDetailsImplement != null) {
-            accessToken = jwtApiService.generateToken(userDetailsImplement.getUsername());
+            accessToken = jwtModuleService.generateToken(userDetailsImplement.getUsername());
         }
 
         return new SignInResponse(accessToken, null);

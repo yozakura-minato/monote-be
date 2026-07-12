@@ -1,6 +1,6 @@
 package com.yozakuraMinato.monoteBe.persistence.configuration;
 
-import com.yozakuraMinato.monoteBe.user.service.UserContextApiService;
+import com.yozakuraMinato.monoteBe.user.service.UserContextModuleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,11 +17,11 @@ public class AuditConfiguration {
 
     private final UUID SYSTEM_ID = new UUID(0L, 0L);
 
-    private final UserContextApiService userContextApiService;
+    private final UserContextModuleService userContextModuleService;
 
     @Bean
     public AuditorAware<UUID> auditorProvider() {
-        return () -> userContextApiService
+        return () -> userContextModuleService
                 .getUserId()
                 .or(() -> Optional.of(SYSTEM_ID));
     }

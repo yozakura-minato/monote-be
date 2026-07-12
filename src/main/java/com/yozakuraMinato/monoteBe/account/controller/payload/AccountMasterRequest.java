@@ -1,4 +1,4 @@
-package com.yozakuraMinato.monoteBe.account.controller.applicationPayload;
+package com.yozakuraMinato.monoteBe.account.controller.payload;
 
 import com.yozakuraMinato.monoteBe.account.shared.AccountConstant;
 import com.yozakuraMinato.monoteBe.account.shared.AccountMessage;
