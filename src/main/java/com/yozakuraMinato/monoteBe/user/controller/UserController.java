@@ -1,9 +1,9 @@
 package com.yozakuraMinato.monoteBe.user.controller;
 
 import com.yozakuraMinato.monoteBe.common.payload.ApplicationResponse;
-import com.yozakuraMinato.monoteBe.user.controller.applicationPayload.SignInRequest;
-import com.yozakuraMinato.monoteBe.user.controller.applicationPayload.SignInResponse;
-import com.yozakuraMinato.monoteBe.user.controller.applicationPayload.SignUpRequest;
+import com.yozakuraMinato.monoteBe.user.controller.payload.SignInRequest;
+import com.yozakuraMinato.monoteBe.user.controller.payload.SignInResponse;
+import com.yozakuraMinato.monoteBe.user.controller.payload.SignUpRequest;
 import com.yozakuraMinato.monoteBe.user.service.UserApplicationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,7 @@
 package com.yozakuraMinato.monoteBe.common.annotation.resolver;
 
 import com.yozakuraMinato.monoteBe.common.annotation.CurrentUserId;
-import com.yozakuraMinato.monoteBe.user.service.UserContextApiService;
+import com.yozakuraMinato.monoteBe.user.service.UserContextModuleService;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NonNull;
 import org.springframework.core.MethodParameter;
@@ -18,7 +18,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CurrentUserIdResolver implements HandlerMethodArgumentResolver {
 
-    private final UserContextApiService userContextApiService;
+    private final UserContextModuleService userContextModuleService;
 
     @Override
     public boolean supportsParameter(MethodParameter methodParameter) {
@@ -31,7 +31,7 @@ public class CurrentUserIdResolver implements HandlerMethodArgumentResolver {
             @NonNull MethodParameter methodParameter, ModelAndViewContainer modelAndViewContainer,
             @NonNull NativeWebRequest nativeWebRequest, WebDataBinderFactory webDataBinderFactory
     ) {
-        return userContextApiService
+        return userContextModuleService
                 .getUserId()
                 .orElseThrow(() -> new BadCredentialsException(null));
     }

@@ -1,6 +1,6 @@
 package com.yozakuraMinato.monoteBe.user.service.implement;
 
-import com.yozakuraMinato.monoteBe.user.service.UserContextApiService;
+import com.yozakuraMinato.monoteBe.user.service.UserContextModuleService;
 import com.yozakuraMinato.monoteBe.user.domain.UserDetailsImplement;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class UserContextServiceImplement implements UserContextApiService {
+public class UserContextServiceImplement implements UserContextModuleService {
 
     @Override
     public Optional<UUID> getUserId() {
