@@ -1,16 +1,16 @@
 package com.yozakuraMinato.monoteBe.account.service.implement;
 
-import com.yozakuraMinato.monoteBe.account.constant.AccountMessage;
+import com.yozakuraMinato.monoteBe.account.shared.AccountMessage;
 import com.yozakuraMinato.monoteBe.account.domain.Account;
 import com.yozakuraMinato.monoteBe.account.domain.type.AccountStatus;
-import com.yozakuraMinato.monoteBe.account.dto.AccountMasterRequest;
-import com.yozakuraMinato.monoteBe.account.dto.AccountMasterResponse;
-import com.yozakuraMinato.monoteBe.account.dto.AccountUpdateRequest;
+import com.yozakuraMinato.monoteBe.account.controller.applicationPayload.AccountMasterRequest;
+import com.yozakuraMinato.monoteBe.account.controller.applicationPayload.AccountMasterResponse;
+import com.yozakuraMinato.monoteBe.account.controller.applicationPayload.AccountUpdateRequest;
 import com.yozakuraMinato.monoteBe.account.repository.AccountRepository;
 import com.yozakuraMinato.monoteBe.account.repository.projection.AccountProjection;
 import com.yozakuraMinato.monoteBe.account.service.AccountApplicationService;
-import com.yozakuraMinato.monoteBe.account.util.AccountMapper;
-import com.yozakuraMinato.monoteBe.common.dto.PaginationRequest;
+import com.yozakuraMinato.monoteBe.account.shared.AccountMapper;
+import com.yozakuraMinato.monoteBe.common.payload.PaginationRequest;
 import com.yozakuraMinato.monoteBe.common.exception.ResourceConflictException;
 import com.yozakuraMinato.monoteBe.common.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;

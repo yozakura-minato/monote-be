@@ -1,7 +1,7 @@
-package com.yozakuraMinato.monoteBe.account.dto;
+package com.yozakuraMinato.monoteBe.account.controller.applicationPayload;
 
-import com.yozakuraMinato.monoteBe.account.constant.AccountConstant;
-import com.yozakuraMinato.monoteBe.account.constant.AccountMessage;
+import com.yozakuraMinato.monoteBe.account.shared.AccountConstant;
+import com.yozakuraMinato.monoteBe.account.shared.AccountMessage;
 import com.yozakuraMinato.monoteBe.account.domain.type.AccountStatus;
 import com.yozakuraMinato.monoteBe.common.annotation.NormalizedString;
 import jakarta.validation.constraints.NotNull;

@@ -1,4 +1,4 @@
-package com.yozakuraMinato.monoteBe.account.dto;
+package com.yozakuraMinato.monoteBe.account.controller.applicationPayload;
 
 import com.yozakuraMinato.monoteBe.account.domain.type.AccountStatus;
 

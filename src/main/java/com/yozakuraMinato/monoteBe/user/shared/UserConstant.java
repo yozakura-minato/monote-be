@@ -1,4 +1,4 @@
-package com.yozakuraMinato.monoteBe.user.constant;
+package com.yozakuraMinato.monoteBe.user.shared;
 
 public class UserConstant {
 
