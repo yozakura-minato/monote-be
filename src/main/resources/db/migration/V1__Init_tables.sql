@@ -15,7 +15,9 @@ create table users(
     is_deleted boolean not null,
 
     constraint chk_completed_update_audit_fields
-		check ((updated_at is null) = (updated_by is null))
+		check ((updated_at is null) = (updated_by is null)),
+    constraint chk_completed_delete_audit_fields
+        check (is_deleted = false or (updated_at is not null and updated_by is not null))
 );
 
 create unique index idx_unique_user_email
@@ -47,7 +49,9 @@ create table accounts(
     	references users(id),
     	
     constraint chk_completed_update_audit_fields
-    	check ((updated_at is null) = (updated_by is null))
+    	check ((updated_at is null) = (updated_by is null)),
+    constraint chk_completed_delete_audit_fields
+        check (is_deleted = false or (updated_at is not null and updated_by is not null))
 );
 
 create unique index idx_unique_account_name
@@ -73,7 +77,9 @@ create table categories(
 		references users(id),
 		
     constraint chk_completed_update_audit_fields
-		check ((updated_at is null) = (updated_by is null))
+		check ((updated_at is null) = (updated_by is null)),
+    constraint chk_completed_delete_audit_fields
+        check (is_deleted = false or (updated_at is not null and updated_by is not null))
 );
 
 create unique index idx_unique_category_name
@@ -111,7 +117,9 @@ create table tracking_periods(
     	references accounts(id),
     	
     constraint chk_complete_update_audit_fields
-    	check ((updated_at is null) = (updated_by is null))
+    	check ((updated_at is null) = (updated_by is null)),
+    constraint chk_completed_delete_audit_fields
+        check (is_deleted = false or (updated_at is not null and updated_by is not null))
 );
 
 create unique index idx_unique_budget_name_and_type
@@ -150,7 +158,9 @@ create table allocations(
     	references categories(id),
     
     constraint chk_completed_updated_audit_fields
-    	check ((updated_at is null) = (updated_by is null))
+    	check ((updated_at is null) = (updated_by is null)),
+    constraint chk_completed_delete_audit_fields
+        check (is_deleted = false or (updated_at is not null and updated_by is not null))
 );
 
 create unique index idx_unique_category_allocation_category_id
@@ -203,7 +213,9 @@ create table transactions(
     constraint chk_not_null_account_fields
     	check ((source_account_id is not null) or (destination_account_id is not null)),
     constraint chk_completed_update_audit_fields
-		check ((updated_at is null) = (updated_by is null))
+		check ((updated_at is null) = (updated_by is null)),
+    constraint chk_completed_delete_audit_fields
+        check (is_deleted = false or (updated_at is not null and updated_by is not null))
 );
 
 create index idx_sort_transaction_history

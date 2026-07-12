@@ -1,16 +1,11 @@
-package com.yozakuraMinato.monoteBe.user.constant;
+package com.yozakuraMinato.monoteBe.user.shared;
 
 public class UserMessage {
 
     private static final String USER = "user.";
-    private static final String ID = USER + "id.";
     private static final String EMAIL = USER + "email.";
     private static final String PASSWORD = USER + "password.";
     private static final String DISPLAY_NAME = USER + "displayName.";
-
-    public static class Id {
-        public static final String notFound = ID + "notFound";
-    }
 
     public static class Email {
         public static final String IS_NULL = EMAIL + "isNull";

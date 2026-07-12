@@ -1,4 +1,4 @@
-package com.yozakuraMinato.monoteBe.common.dto;
+package com.yozakuraMinato.monoteBe.common.payload;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -10,7 +10,7 @@ public record PaginationRequest(
 
         Integer size,
         Integer page,
-        String order
+        String sort
 
 ) {
 
@@ -30,11 +30,11 @@ public record PaginationRequest(
             throw new IllegalArgumentException(INVALID_PAGE);
         }
 
-        if(order == null || order.isBlank()) order = "id";
+        if(sort == null || sort.isBlank()) sort = "id";
     }
 
     public Pageable toPageable() {
-        return PageRequest.of(page, size, Sort.by(order));
+        return PageRequest.of(page, size, Sort.by(sort));
     }
 
 }

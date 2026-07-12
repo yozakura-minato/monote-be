@@ -1,4 +1,4 @@
-package com.yozakuraMinato.monoteBe.account.constant;
+package com.yozakuraMinato.monoteBe.account.shared;
 
 public class AccountConstant {
 

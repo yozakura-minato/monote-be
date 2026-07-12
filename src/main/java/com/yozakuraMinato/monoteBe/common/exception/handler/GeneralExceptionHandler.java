@@ -1,6 +1,6 @@
 package com.yozakuraMinato.monoteBe.common.exception.handler;
 
-import com.yozakuraMinato.monoteBe.common.dto.ApplicationResponse;
+import com.yozakuraMinato.monoteBe.common.payload.ApplicationResponse;
 import com.yozakuraMinato.monoteBe.common.exception.BusinessRuleException;
 import com.yozakuraMinato.monoteBe.common.exception.ResourceConflictException;
 import com.yozakuraMinato.monoteBe.common.exception.ResourceNotFoundException;

@@ -1,9 +1,9 @@
 package com.yozakuraMinato.monoteBe.account.service;
 
-import com.yozakuraMinato.monoteBe.account.dto.AccountMasterRequest;
-import com.yozakuraMinato.monoteBe.account.dto.AccountMasterResponse;
-import com.yozakuraMinato.monoteBe.account.dto.AccountUpdateRequest;
-import com.yozakuraMinato.monoteBe.common.dto.PaginationRequest;
+import com.yozakuraMinato.monoteBe.account.controller.applicationPayload.AccountMasterRequest;
+import com.yozakuraMinato.monoteBe.account.controller.applicationPayload.AccountMasterResponse;
+import com.yozakuraMinato.monoteBe.account.controller.applicationPayload.AccountUpdateRequest;
+import com.yozakuraMinato.monoteBe.common.payload.PaginationRequest;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
 
