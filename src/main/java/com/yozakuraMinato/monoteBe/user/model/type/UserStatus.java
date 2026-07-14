@@ -1,11 +1,11 @@
-package com.yozakuraMinato.monoteBe.account.domain.type;
+package com.yozakuraMinato.monoteBe.user.model.type;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum AccountStatus {
+public enum UserStatus {
 
     INACTIVE("INACTIVE"),
     ACTIVATE("ACTIVE");

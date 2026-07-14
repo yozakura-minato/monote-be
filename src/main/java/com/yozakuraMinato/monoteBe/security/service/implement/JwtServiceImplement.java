@@ -1,6 +1,6 @@
 package com.yozakuraMinato.monoteBe.security.service.implement;
 
-import com.yozakuraMinato.monoteBe.security.service.JwtApplicationService;
+import com.yozakuraMinato.monoteBe.security.service.JwtApiService;
 import com.yozakuraMinato.monoteBe.security.service.JwtModuleService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -18,7 +18,7 @@ import java.util.*;
 import java.util.function.Function;
 
 @Service
-public class JwtServiceImplement implements JwtModuleService, JwtApplicationService {
+public class JwtServiceImplement implements JwtModuleService, JwtApiService {
 
     @Value("${security.jwt.key-algorithm}")
     private String keyAlgorithm;

@@ -18,8 +18,8 @@ The main goal is to help user take full control of their financial health and ac
 - Docker, Flyway
 
 ### System architecture diagram
-![alt text](./docs/bsad.png)
-![alt text](./docs/dsad.png)
+![alt text](./docs/bsad.jpg)
+![alt text](./docs/dsad.jpg)
 
 ### Entity-relationship diagram
 ![alt text](./docs/erd.png)
@@ -31,7 +31,7 @@ monoteBe
 ├── common
 ├── persistence
 └── module
-    ├── domain
+    ├── mode
     │   ├── type
     │   │   └── Enum.java    
     │   └── Entity.java
@@ -45,10 +45,10 @@ monoteBe
     │   │   └── Response.java    
     │   ├── implement
     │   │   └── ServiceImplement.java    
-    │   ├── ApplicationService.java
+    │   ├── ApiService.java
     │   ├── ModuleService.java
     │   └── EventService.java
-    ├── controller
+    ├── api
     │   ├── payload
     │   │   ├── Request.java
     │   │   └── Response.java

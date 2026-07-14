@@ -1,4 +1,4 @@
-package com.yozakuraMinato.monoteBe.user.controller.payload;
+package com.yozakuraMinato.monoteBe.user.api.payload;
 
 import com.yozakuraMinato.monoteBe.common.annotation.IsStrongPassword;
 import com.yozakuraMinato.monoteBe.common.annotation.NormalizedEmail;

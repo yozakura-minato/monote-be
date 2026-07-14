@@ -1,14 +1,14 @@
 package com.yozakuraMinato.monoteBe.account.service.implement;
 
 import com.yozakuraMinato.monoteBe.account.shared.AccountMessage;
-import com.yozakuraMinato.monoteBe.account.domain.Account;
-import com.yozakuraMinato.monoteBe.account.domain.type.AccountStatus;
-import com.yozakuraMinato.monoteBe.account.controller.payload.AccountMasterRequest;
-import com.yozakuraMinato.monoteBe.account.controller.payload.AccountMasterResponse;
-import com.yozakuraMinato.monoteBe.account.controller.payload.AccountUpdateRequest;
+import com.yozakuraMinato.monoteBe.account.model.Account;
+import com.yozakuraMinato.monoteBe.account.model.type.AccountStatus;
+import com.yozakuraMinato.monoteBe.account.api.payload.AccountMasterRequest;
+import com.yozakuraMinato.monoteBe.account.api.payload.AccountMasterResponse;
+import com.yozakuraMinato.monoteBe.account.api.payload.AccountUpdateRequest;
 import com.yozakuraMinato.monoteBe.account.repository.AccountRepository;
 import com.yozakuraMinato.monoteBe.account.repository.projection.AccountProjection;
-import com.yozakuraMinato.monoteBe.account.service.AccountApplicationService;
+import com.yozakuraMinato.monoteBe.account.service.AccountApiService;
 import com.yozakuraMinato.monoteBe.account.shared.AccountMapper;
 import com.yozakuraMinato.monoteBe.common.payload.PaginationRequest;
 import com.yozakuraMinato.monoteBe.common.exception.ResourceConflictException;
@@ -28,7 +28,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class AccountServiceImplement implements AccountApplicationService {
+public class AccountServiceImplement implements AccountApiService {
 
     private final PagedResourcesAssembler<AccountMasterResponse> pagedResourcesAssembler;
 

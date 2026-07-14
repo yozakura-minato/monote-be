@@ -1,7 +1,7 @@
 package com.yozakuraMinato.monoteBe.user.service.implement;
 
 import com.yozakuraMinato.monoteBe.user.service.UserContextModuleService;
-import com.yozakuraMinato.monoteBe.user.domain.UserDetailsImplement;
+import com.yozakuraMinato.monoteBe.user.model.UserDetailsImplement;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
