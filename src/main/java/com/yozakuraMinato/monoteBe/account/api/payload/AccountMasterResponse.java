@@ -1,6 +1,6 @@
-package com.yozakuraMinato.monoteBe.account.controller.payload;
+package com.yozakuraMinato.monoteBe.account.api.payload;
 
-import com.yozakuraMinato.monoteBe.account.domain.type.AccountStatus;
+import com.yozakuraMinato.monoteBe.account.model.type.AccountStatus;
 
 import java.math.BigDecimal;
 import java.util.UUID;

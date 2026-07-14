@@ -1,6 +1,6 @@
 package com.yozakuraMinato.monoteBe.common.exception.handler;
 
-import com.yozakuraMinato.monoteBe.common.payload.ApplicationResponse;
+import com.yozakuraMinato.monoteBe.common.payload.ApiResponse;
 import com.yozakuraMinato.monoteBe.common.exception.BusinessRuleException;
 import com.yozakuraMinato.monoteBe.common.exception.ResourceConflictException;
 import com.yozakuraMinato.monoteBe.common.exception.ResourceNotFoundException;
@@ -26,76 +26,76 @@ public class GeneralExceptionHandler {
     private final String INTERNAL_SERVER_ERROR = "general.internalServerError";
 
     @ExceptionHandler(value = ResourceNotFoundException.class)
-    public ResponseEntity<ApplicationResponse<?>> handleResourceNotFoundException(
+    public ResponseEntity<ApiResponse<?>> handleResourceNotFoundException(
             ResourceNotFoundException resourceNotFoundException
     ) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(ApplicationResponse.error(resourceNotFoundException.getMessage()));
+                .body(ApiResponse.error(resourceNotFoundException.getMessage()));
     }
 
     @ExceptionHandler(value = ResourceConflictException.class)
-    public ResponseEntity<ApplicationResponse<?>> handleResourceConflictException(
+    public ResponseEntity<ApiResponse<?>> handleResourceConflictException(
             ResourceConflictException resourceConflictException
     ) {
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
-                .body(ApplicationResponse.error(resourceConflictException.getMessage()));
+                .body(ApiResponse.error(resourceConflictException.getMessage()));
     }
 
     @ExceptionHandler(value = BusinessRuleException.class)
-    public ResponseEntity<ApplicationResponse<?>> handleBusinessRuleException(
+    public ResponseEntity<ApiResponse<?>> handleBusinessRuleException(
             BusinessRuleException businessRuleException
     ) {
         return ResponseEntity
                 .status(HttpStatus.UNPROCESSABLE_CONTENT)
-                .body(ApplicationResponse.error(businessRuleException.getMessage()));
+                .body(ApiResponse.error(businessRuleException.getMessage()));
     }
 
     @ExceptionHandler(value = HandlerMethodValidationException.class)
-    public ResponseEntity<ApplicationResponse<?>> handleHandlerMethodValidationException(
+    public ResponseEntity<ApiResponse<?>> handleHandlerMethodValidationException(
             HandlerMethodValidationException handlerMethodValidationException
     ) {
         String message = handlerMethodValidationException.getAllErrors().getFirst().getDefaultMessage();
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(ApplicationResponse.error(
+                .body(ApiResponse.error(
                         message == null || message.isBlank() ? BAD_REQUEST : message
                 ));
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ApplicationResponse<?>> handleHttpMessageNotReadableException(
+    public ResponseEntity<ApiResponse<?>> handleHttpMessageNotReadableException(
             HttpMessageNotReadableException httpMessageNotReadableException
     ) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(ApplicationResponse.error(BAD_REQUEST));
+                .body(ApiResponse.error(BAD_REQUEST));
     }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    public ResponseEntity<ApplicationResponse<?>> handleMethodArgumentNotValidException(
+    public ResponseEntity<ApiResponse<?>> handleMethodArgumentNotValidException(
             MethodArgumentNotValidException methodArgumentNotValidException
     ) {
         List<FieldError> errors = methodArgumentNotValidException.getFieldErrors();
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(ApplicationResponse.error(
+                .body(ApiResponse.error(
                         errors.isEmpty() ? BAD_REQUEST : errors.getFirst().getDefaultMessage()
                 ));
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<ApplicationResponse<?>> handleMethodArgumentTypeMismatchException(
+    public ResponseEntity<ApiResponse<?>> handleMethodArgumentTypeMismatchException(
             MethodArgumentTypeMismatchException methodArgumentTypeMismatchException
     ) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(ApplicationResponse.error(BAD_REQUEST));
+                .body(ApiResponse.error(BAD_REQUEST));
     }
 
     @ExceptionHandler(BeanInstantiationException.class)
-    public ResponseEntity<ApplicationResponse<?>> handleBeanInstantiationException (
+    public ResponseEntity<ApiResponse<?>> handleBeanInstantiationException (
             BeanInstantiationException beanInstantiationException
     ) {
         Throwable rootCause = beanInstantiationException.getMostSpecificCause();
@@ -103,31 +103,31 @@ public class GeneralExceptionHandler {
         if (rootCause instanceof IllegalArgumentException) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
-                    .body(ApplicationResponse.error(rootCause.getMessage())
+                    .body(ApiResponse.error(rootCause.getMessage())
             );
         }
 
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(ApplicationResponse.error(INTERNAL_SERVER_ERROR));
+                .body(ApiResponse.error(INTERNAL_SERVER_ERROR));
     }
 
     @ExceptionHandler(value = BadCredentialsException.class)
-    public ResponseEntity<ApplicationResponse<?>> handleBadCredentialsException (
+    public ResponseEntity<ApiResponse<?>> handleBadCredentialsException (
             BadCredentialsException badCredentialsException
     ) {
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
-                .body(ApplicationResponse.error(UNAUTHORIZED));
+                .body(ApiResponse.error(UNAUTHORIZED));
     }
 
     @ExceptionHandler(value = RuntimeException.class)
-    public ResponseEntity<ApplicationResponse<?>> handleRuntimeException(
+    public ResponseEntity<ApiResponse<?>> handleRuntimeException(
             RuntimeException runtimeException
     ) {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(ApplicationResponse.error(INTERNAL_SERVER_ERROR));
+                .body(ApiResponse.error(INTERNAL_SERVER_ERROR));
     }
 
 }

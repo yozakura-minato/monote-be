@@ -1,6 +1,6 @@
 package com.yozakuraMinato.monoteBe.account.repository;
 
-import com.yozakuraMinato.monoteBe.account.domain.Account;
+import com.yozakuraMinato.monoteBe.account.model.Account;
 import com.yozakuraMinato.monoteBe.account.repository.projection.AccountProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

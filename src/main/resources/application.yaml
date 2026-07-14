@@ -34,7 +34,7 @@ logging:
             bind: trace
 
 security:
-  public-path: "/sign-up,/sign-in,/reset-password"
+  public-path: "/api/sign-up,/api/sign-in,/api/reset-password"
   password:
     encoder-strength: 12
   jwt:

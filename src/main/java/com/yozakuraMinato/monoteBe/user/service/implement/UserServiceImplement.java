@@ -2,17 +2,17 @@ package com.yozakuraMinato.monoteBe.user.service.implement;
 
 import com.yozakuraMinato.monoteBe.common.exception.ResourceConflictException;
 import com.yozakuraMinato.monoteBe.security.service.JwtModuleService;
-import com.yozakuraMinato.monoteBe.user.controller.payload.SignInRequest;
-import com.yozakuraMinato.monoteBe.user.controller.payload.SignInResponse;
-import com.yozakuraMinato.monoteBe.user.controller.payload.SignUpRequest;
+import com.yozakuraMinato.monoteBe.user.api.payload.SignInRequest;
+import com.yozakuraMinato.monoteBe.user.api.payload.SignInResponse;
+import com.yozakuraMinato.monoteBe.user.api.payload.SignUpRequest;
 import com.yozakuraMinato.monoteBe.user.repository.UserRepository;
-import com.yozakuraMinato.monoteBe.user.domain.User;
-import com.yozakuraMinato.monoteBe.user.domain.UserDetailsImplement;
-import com.yozakuraMinato.monoteBe.user.service.UserApplicationService;
+import com.yozakuraMinato.monoteBe.user.model.User;
+import com.yozakuraMinato.monoteBe.user.model.UserDetailsImplement;
+import com.yozakuraMinato.monoteBe.user.service.UserApiService;
 import com.yozakuraMinato.monoteBe.user.shared.UserMapper;
 import com.yozakuraMinato.monoteBe.user.shared.UserMessage;
-import com.yozakuraMinato.monoteBe.user.domain.type.UserRole;
-import com.yozakuraMinato.monoteBe.user.domain.type.UserStatus;
+import com.yozakuraMinato.monoteBe.user.model.type.UserRole;
+import com.yozakuraMinato.monoteBe.user.model.type.UserStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImplement implements UserApplicationService {
+public class UserServiceImplement implements UserApiService {
 
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;

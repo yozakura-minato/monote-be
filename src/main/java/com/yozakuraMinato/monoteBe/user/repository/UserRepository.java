@@ -1,7 +1,7 @@
 package com.yozakuraMinato.monoteBe.user.repository;
 
-import com.yozakuraMinato.monoteBe.user.domain.type.UserStatus;
-import com.yozakuraMinato.monoteBe.user.domain.User;
+import com.yozakuraMinato.monoteBe.user.model.type.UserStatus;
+import com.yozakuraMinato.monoteBe.user.model.User;
 import com.yozakuraMinato.monoteBe.user.repository.projection.UserDetailsProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
