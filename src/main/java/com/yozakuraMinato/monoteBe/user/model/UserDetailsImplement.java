@@ -1,7 +1,7 @@
 package com.yozakuraMinato.monoteBe.user.model;
 
-import com.yozakuraMinato.monoteBe.user.repository.projection.UserDetailsProjection;
 import com.yozakuraMinato.monoteBe.user.model.type.UserRole;
+import com.yozakuraMinato.monoteBe.user.repository.projection.UserDetailsProjection;
 import org.jspecify.annotations.NullMarked;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
