@@ -31,6 +31,8 @@ public class JwtServiceImplement implements JwtModuleService, JwtApiService {
     private long accessTokenExpiration;
     @Value("${security.jwt.refresh-token-expiration}")
     private long refreshTokenExpiration;
+    @Value("${security.jwt.secret-key}")
+    private String JWT_SECRET_KEY;
 
     @Autowired
     private JwtRedisApiService jwtRedisApiService;
@@ -110,7 +112,8 @@ public class JwtServiceImplement implements JwtModuleService, JwtApiService {
         Date expiration = claims.getExpiration();
         String jtiString = claims.getId();
 
-        if (expiration.before(new Date())) return false;
+        if (email == null || email.isBlank()) return false;
+        if (expiration == null || expiration.before(new Date())) return false;
         if (jtiString != null) return false;
 
         return email.equals(userDetails.getUsername());
@@ -125,7 +128,7 @@ public class JwtServiceImplement implements JwtModuleService, JwtApiService {
         String jtiString = claims.getId();
 
         if(userIdString == null || userIdString.isBlank()) return false;
-        if(expiration.before(new Date())) return false;
+        if(expiration == null || expiration.before(new Date())) return false;
         if(jtiString == null || jtiString.isBlank()) return false;
 
         return jwtRedisApiService.isRefreshTokenExists(userIdString, jtiString);
@@ -139,7 +142,7 @@ public class JwtServiceImplement implements JwtModuleService, JwtApiService {
     }
 
     private SecretKey getKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+        byte[] keyBytes = Decoders.BASE64.decode(JWT_SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 

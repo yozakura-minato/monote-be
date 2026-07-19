@@ -48,6 +48,7 @@ security:
     key-algorithm: "HmacSHA256"
     access-token-expiration: 900_000
     refresh-token-expiration: 1_296_000_000
+    secret-key: "M0N073=v9MVz+5snA0l1YhN8Nv2hmnITS3heUZp=JVV7"
   auth-header:
     label: "Authorization"
     start-index: 7
