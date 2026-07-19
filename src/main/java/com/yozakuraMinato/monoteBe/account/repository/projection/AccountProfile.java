@@ -5,7 +5,7 @@ import com.yozakuraMinato.monoteBe.account.model.type.AccountStatus;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public record AccountProjection (
+public record AccountProfile(
 
         UUID id,
         String name,

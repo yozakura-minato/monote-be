@@ -2,6 +2,7 @@ package com.yozakuraMinato.monoteBe.account.model;
 
 import com.yozakuraMinato.monoteBe.account.model.type.AccountStatus;
 import com.yozakuraMinato.monoteBe.persistence.model.BaseEntity;
+import com.yozakuraMinato.monoteBe.persistence.shared.PersistenceConstraint;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,29 +18,40 @@ import java.util.UUID;
 @Getter
 @DynamicUpdate
 @Table(name = "accounts")
-@SQLRestriction("is_deleted = false")
+@SQLRestriction(PersistenceConstraint.SOFT_DELETE_RESTRICTION)
 public class Account extends BaseEntity {
 
     @Id
     @GeneratedValue
     @UuidGenerator(style = UuidGenerator.Style.TIME)
-    @Column(name = "id", updatable = false)
+    @Column(name = "id",
+            updatable = false)
     private UUID id;
 
-    @Column(name = "userId", nullable = false, updatable = false)
+    @Column(name = "user_id",
+            nullable = false,
+            updatable = false)
     private UUID userId;
 
-    @Column(name = "name", length = 100, nullable = false)
+    @Column(name = "name",
+            length = PersistenceConstraint.Entity.SHORT_TEXT_LENGTH,
+            nullable = false)
     private String name;
 
-    @Column(name = "description", columnDefinition = "TEXT")
+    @Column(name = "description",
+            columnDefinition = PersistenceConstraint.Entity.LONG_TEXT)
     private String description;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", length = 50, nullable = false)
-    private AccountStatus status;
+    @Column(name = "status",
+            length = PersistenceConstraint.Entity.ENUM_LENGTH,
+            nullable = false)
+    private AccountStatus status = AccountStatus.ACTIVE;
 
-    @Column(name = "balance", scale = 14, precision = 2, nullable = false)
+    @Column(name = "balance",
+            scale = PersistenceConstraint.Entity.CURRENCY_SCALE_LENGTH,
+            precision = PersistenceConstraint.Entity.CURRENCY_PRECISION_LENGTH,
+            nullable = false)
     private BigDecimal balance;
 
 }

@@ -43,7 +43,7 @@ public class UserServiceImplement implements UserApiService {
         User newUser = userMapper.signUpRequestToEntity(signUpRequest);
         newUser.setHashedPassword(passwordEncoder.encode(signUpRequest.password()));
         newUser.setRole(UserRole.USER);
-        newUser.setStatus(UserStatus.ACTIVATE);
+        newUser.setStatus(UserStatus.ACTIVE);
 
         userRepository.save(newUser);
     }

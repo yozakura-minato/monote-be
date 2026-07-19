@@ -1,7 +1,7 @@
 package com.yozakuraMinato.monoteBe.user.model;
 
 import com.yozakuraMinato.monoteBe.user.model.type.UserRole;
-import com.yozakuraMinato.monoteBe.user.repository.projection.UserDetailsProjection;
+import com.yozakuraMinato.monoteBe.user.repository.projection.UserCredential;
 import org.jspecify.annotations.NullMarked;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,14 +13,14 @@ import java.util.UUID;
 
 public class UserDetailsImplement implements UserDetails {
 
-    private final UserDetailsProjection userDetailsProjection;
+    private final UserCredential userCredential;
 
-    public UUID getId() {
-        return userDetailsProjection.id();
+    public UserDetailsImplement(UserCredential userCredential) {
+        this.userCredential = userCredential;
     }
 
-    public UserDetailsImplement(UserDetailsProjection userDetailsProjection) {
-        this.userDetailsProjection = userDetailsProjection;
+    public UUID getId() {
+        return userCredential.id();
     }
 
     @Override
@@ -32,13 +32,13 @@ public class UserDetailsImplement implements UserDetails {
     @Override
     @NullMarked
     public String getPassword() {
-        return userDetailsProjection.hashedPassword();
+        return userCredential.hashedPassword();
     }
 
     @Override
     @NullMarked
     public String getUsername() {
-        return userDetailsProjection.email();
+        return userCredential.email();
     }
 
     @Override

@@ -5,8 +5,10 @@ services:
     container_name: 'monote_postgres'
     environment:
       - 'POSTGRES_DB=monote_postgres'
-      - 'POSTGRES_PASSWORD=monote'
-      - 'POSTGRES_USER=monote'
+      # TODO 1/2: Enter your Password for PostgreSQL database here
+      - 'POSTGRES_PASSWORD=YOUR_POSTGRESQL_PASSWORD'
+      # TODO 2/2: Enter your Username for PostgreSQL database here
+      - 'POSTGRES_USER=YOUR_POSTGRESQL_USERNAME'
       - 'TZ=Asia/Ho_Chi_Minh'
     ports:
       - '5433:5432'

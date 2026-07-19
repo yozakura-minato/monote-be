@@ -2,7 +2,7 @@ package com.yozakuraMinato.monoteBe.user.repository.projection;
 
 import java.util.UUID;
 
-public record UserDetailsProjection(
+public record UserCredential(
 
         UUID id,
         String email,

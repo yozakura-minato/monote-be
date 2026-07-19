@@ -1,8 +1,8 @@
 package com.yozakuraMinato.monoteBe.user.repository;
 
-import com.yozakuraMinato.monoteBe.user.model.type.UserStatus;
 import com.yozakuraMinato.monoteBe.user.model.User;
-import com.yozakuraMinato.monoteBe.user.repository.projection.UserDetailsProjection;
+import com.yozakuraMinato.monoteBe.user.model.type.UserStatus;
+import com.yozakuraMinato.monoteBe.user.repository.projection.UserCredential;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,6 +14,6 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     boolean existsByEmail(String email);
 
-    Optional<UserDetailsProjection> findByEmailAndStatus(String email, UserStatus userStatus);
+    Optional<UserCredential> findByEmailAndStatus(String email, UserStatus userStatus);
 
 }

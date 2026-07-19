@@ -1,11 +1,11 @@
 package com.yozakuraMinato.monoteBe.user.service.implement;
 
-import com.yozakuraMinato.monoteBe.user.repository.UserRepository;
 import com.yozakuraMinato.monoteBe.user.model.UserDetailsImplement;
-import com.yozakuraMinato.monoteBe.user.repository.projection.UserDetailsProjection;
-import com.yozakuraMinato.monoteBe.user.shared.UserMessage;
 import com.yozakuraMinato.monoteBe.user.model.type.UserStatus;
+import com.yozakuraMinato.monoteBe.user.repository.UserRepository;
+import com.yozakuraMinato.monoteBe.user.repository.projection.UserCredential;
 import com.yozakuraMinato.monoteBe.user.service.UserDetailsModuleService;
+import com.yozakuraMinato.monoteBe.user.shared.UserMessage;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NullMarked;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,11 +22,11 @@ public class UserDetailsServiceImplement implements UserDetailsService, UserDeta
     @Override
     @NullMarked
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        UserDetailsProjection userDetailsProjection = userRepository
-                .findByEmailAndStatus(email, UserStatus.ACTIVATE)
+        UserCredential userCredential = userRepository
+                .findByEmailAndStatus(email, UserStatus.ACTIVE)
                 .orElseThrow(() -> new UsernameNotFoundException(UserMessage.Email.NOT_FOUND));
 
-        return new UserDetailsImplement(userDetailsProjection);
+        return new UserDetailsImplement(userCredential);
     }
 
 }

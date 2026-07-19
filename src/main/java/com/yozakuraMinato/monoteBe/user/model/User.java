@@ -1,6 +1,7 @@
 package com.yozakuraMinato.monoteBe.user.model;
 
 import com.yozakuraMinato.monoteBe.persistence.model.BaseEntity;
+import com.yozakuraMinato.monoteBe.persistence.shared.PersistenceConstraint;
 import com.yozakuraMinato.monoteBe.user.model.type.UserRole;
 import com.yozakuraMinato.monoteBe.user.model.type.UserStatus;
 import jakarta.persistence.*;
@@ -17,7 +18,7 @@ import java.util.UUID;
 @Getter
 @DynamicUpdate
 @Table(name = "users")
-@SQLRestriction("is_deleted = false")
+@SQLRestriction(PersistenceConstraint.SOFT_DELETE_RESTRICTION)
 public class User extends BaseEntity {
 
     @Id
@@ -35,15 +36,15 @@ public class User extends BaseEntity {
     @Column(name = "hashed_password")
     private String hashedPassword;
 
-    @Column(name = "display_name", length = 100, nullable = false)
+    @Column(name = "display_name", length = PersistenceConstraint.Entity.SHORT_TEXT_LENGTH, nullable = false)
     private String displayName;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role", length = 50, nullable = false)
-    private UserRole role;
+    @Column(name = "role", length = PersistenceConstraint.Entity.ENUM_LENGTH, nullable = false)
+    private UserRole role = UserRole.ADMIN;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", length = 50, nullable = false)
-    private UserStatus status;
+    @Column(name = "status", length = PersistenceConstraint.Entity.ENUM_LENGTH, nullable = false)
+    private UserStatus status = UserStatus.ACTIVE;
 
 }
