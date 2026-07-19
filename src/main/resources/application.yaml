@@ -24,6 +24,13 @@ spring:
     redis:
       host: localhost
       port: 6379
+      timeout: 2000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+          max-wait: -1ms
 
 logging:
   level:
@@ -34,12 +41,13 @@ logging:
             bind: trace
 
 security:
-  public-path: "/api/sign-up,/api/sign-in,/api/reset-password"
+  public-path: "/api/sign-up,/api/sign-in,/api/refresh,/api/reset-password"
   password:
     encoder-strength: 12
   jwt:
     key-algorithm: "HmacSHA256"
     access-token-expiration: 900_000
+    refresh-token-expiration: 1_296_000_000
   auth-header:
     label: "Authorization"
     start-index: 7
