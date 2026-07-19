@@ -6,6 +6,7 @@ public class UserMessage {
     private static final String EMAIL = USER + "email.";
     private static final String PASSWORD = USER + "password.";
     private static final String DISPLAY_NAME = USER + "displayName.";
+    private static final String REFRESH_TOKEN = USER + "RefreshToken.";
 
     public static class Email {
         public static final String IS_NULL = EMAIL + "isNull";
@@ -23,6 +24,11 @@ public class UserMessage {
     public static class DisplayName {
         public static final String IS_NULL = DISPLAY_NAME + "isNull";
         public static final String HAS_INVALID_SIZE = DISPLAY_NAME + "hasInvalidSize";
+    }
+
+    public static class RefreshToken {
+        public static final String IS_NULL = REFRESH_TOKEN + "isNull";
+        public static final String IS_INVALID = REFRESH_TOKEN + "isInvalid";
     }
 
 }
