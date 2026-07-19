@@ -10,5 +10,4 @@ public record RefreshTokenRequest(
         @NotNull(message = UserMessage.RefreshToken.IS_NULL)
         String refreshToken
 
-)
-{}
+) {}

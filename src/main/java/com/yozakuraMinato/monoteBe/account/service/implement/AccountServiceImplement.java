@@ -1,21 +1,20 @@
 package com.yozakuraMinato.monoteBe.account.service.implement;
 
-import com.yozakuraMinato.monoteBe.account.shared.AccountMessage;
-import com.yozakuraMinato.monoteBe.account.model.Account;
-import com.yozakuraMinato.monoteBe.account.model.type.AccountStatus;
 import com.yozakuraMinato.monoteBe.account.api.payload.AccountMasterRequest;
 import com.yozakuraMinato.monoteBe.account.api.payload.AccountMasterResponse;
 import com.yozakuraMinato.monoteBe.account.api.payload.AccountUpdateRequest;
+import com.yozakuraMinato.monoteBe.account.model.Account;
+import com.yozakuraMinato.monoteBe.account.model.type.AccountStatus;
 import com.yozakuraMinato.monoteBe.account.repository.AccountRepository;
-import com.yozakuraMinato.monoteBe.account.repository.projection.AccountProjection;
+import com.yozakuraMinato.monoteBe.account.repository.projection.AccountProfile;
 import com.yozakuraMinato.monoteBe.account.service.AccountApiService;
 import com.yozakuraMinato.monoteBe.account.shared.AccountMapper;
-import com.yozakuraMinato.monoteBe.common.payload.PaginationRequest;
+import com.yozakuraMinato.monoteBe.account.shared.AccountMessage;
 import com.yozakuraMinato.monoteBe.common.exception.ResourceConflictException;
 import com.yozakuraMinato.monoteBe.common.exception.ResourceNotFoundException;
+import com.yozakuraMinato.monoteBe.common.payload.PaginationRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
@@ -42,7 +41,7 @@ public class AccountServiceImplement implements AccountApiService {
 
         Account newAccount = accountMapper.masterRequestToEntity(accountMasterRequest);
         newAccount.setUserId(userId);
-        newAccount.setStatus(AccountStatus.ACTIVATE);
+        newAccount.setStatus(AccountStatus.ACTIVE);
         newAccount.setBalance(BigDecimal.ZERO);
 
         accountRepository.save(newAccount);
@@ -50,7 +49,7 @@ public class AccountServiceImplement implements AccountApiService {
 
     @Override
     public AccountMasterResponse getAccountById(UUID id, UUID userId) {
-        AccountProjection existsAccount = accountRepository
+        AccountProfile existsAccount = accountRepository
                 .findProjectionByIdAndUserId(id, userId)
                 .orElseThrow(() -> new ResourceNotFoundException(AccountMessage.Id.NOT_FOUND));
 
@@ -58,8 +57,10 @@ public class AccountServiceImplement implements AccountApiService {
     }
 
     @Override
-    public PagedModel<EntityModel<AccountMasterResponse>> getAllAccounts(PaginationRequest paginationRequest, UUID userId) {
-        Page<AccountProjection> accountPage = accountRepository
+    public PagedModel<EntityModel<AccountMasterResponse>> getAllAccounts(
+            PaginationRequest paginationRequest, UUID userId
+    ) {
+        Page<AccountProfile> accountPage = accountRepository
                 .findAllProjectionsByUserId(userId, paginationRequest.toPageable());
 
         Page<AccountMasterResponse> responsePage = accountPage.map(accountMapper::projectionToMasterResponse);

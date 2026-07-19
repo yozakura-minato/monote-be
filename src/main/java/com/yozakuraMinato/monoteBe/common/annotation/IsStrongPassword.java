@@ -12,7 +12,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface IsStrongPassword {
 
-    String message() default "Password is weak";
+    String message() default "PlainPassword is weak";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
     int minimalSize() default 0;

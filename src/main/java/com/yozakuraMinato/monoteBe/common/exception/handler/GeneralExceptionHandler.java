@@ -1,9 +1,10 @@
 package com.yozakuraMinato.monoteBe.common.exception.handler;
 
-import com.yozakuraMinato.monoteBe.common.payload.ApiResponse;
 import com.yozakuraMinato.monoteBe.common.exception.BusinessRuleException;
 import com.yozakuraMinato.monoteBe.common.exception.ResourceConflictException;
 import com.yozakuraMinato.monoteBe.common.exception.ResourceNotFoundException;
+import com.yozakuraMinato.monoteBe.common.payload.ApiResponse;
+import com.yozakuraMinato.monoteBe.common.shared.CommonMessage;
 import org.springframework.beans.BeanInstantiationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +21,6 @@ import java.util.List;
 
 @ControllerAdvice
 public class GeneralExceptionHandler {
-
-    private final String BAD_REQUEST = "general.badRequest";
-    private final String UNAUTHORIZED = "general.unauthorized";
-    private final String INTERNAL_SERVER_ERROR = "general.internalServerError";
 
     @ExceptionHandler(value = ResourceNotFoundException.class)
     public ResponseEntity<ApiResponse<?>> handleResourceNotFoundException(
@@ -60,7 +57,7 @@ public class GeneralExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(ApiResponse.error(
-                        message == null || message.isBlank() ? BAD_REQUEST : message
+                        message == null || message.isBlank() ? CommonMessage.BAD_REQUEST : message
                 ));
     }
 
@@ -70,7 +67,7 @@ public class GeneralExceptionHandler {
     ) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(ApiResponse.error(BAD_REQUEST));
+                .body(ApiResponse.error(CommonMessage.BAD_REQUEST));
     }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
@@ -81,7 +78,7 @@ public class GeneralExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(ApiResponse.error(
-                        errors.isEmpty() ? BAD_REQUEST : errors.getFirst().getDefaultMessage()
+                        errors.isEmpty() ? CommonMessage.BAD_REQUEST : errors.getFirst().getDefaultMessage()
                 ));
     }
 
@@ -91,7 +88,7 @@ public class GeneralExceptionHandler {
     ) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(ApiResponse.error(BAD_REQUEST));
+                .body(ApiResponse.error(CommonMessage.BAD_REQUEST));
     }
 
     @ExceptionHandler(BeanInstantiationException.class)
@@ -109,7 +106,7 @@ public class GeneralExceptionHandler {
 
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(ApiResponse.error(INTERNAL_SERVER_ERROR));
+                .body(ApiResponse.error(CommonMessage.INTERNAL_SERVER_ERROR));
     }
 
     @ExceptionHandler(value = BadCredentialsException.class)
@@ -118,7 +115,7 @@ public class GeneralExceptionHandler {
     ) {
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
-                .body(ApiResponse.error(UNAUTHORIZED));
+                .body(ApiResponse.error(CommonMessage.UNAUTHORIZED));
     }
 
     @ExceptionHandler(value = RuntimeException.class)
@@ -127,7 +124,7 @@ public class GeneralExceptionHandler {
     ) {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(ApiResponse.error(INTERNAL_SERVER_ERROR));
+                .body(ApiResponse.error(CommonMessage.INTERNAL_SERVER_ERROR));
     }
 
 }

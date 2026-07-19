@@ -1,7 +1,7 @@
 package com.yozakuraMinato.monoteBe.account.repository;
 
 import com.yozakuraMinato.monoteBe.account.model.Account;
-import com.yozakuraMinato.monoteBe.account.repository.projection.AccountProjection;
+import com.yozakuraMinato.monoteBe.account.repository.projection.AccountProfile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -34,9 +34,9 @@ public interface AccountRepository extends JpaRepository<Account, UUID> {
     boolean existsByNameAndUserIdAndIdIsNot(String name, UUID userId, UUID id);
     boolean existsByIdAndUserId(UUID id, UUID userId);
 
-    Optional<AccountProjection> findProjectionByIdAndUserId(UUID id, UUID userId);
+    Optional<AccountProfile> findProjectionByIdAndUserId(UUID id, UUID userId);
     Optional<Account> findByIdAndUserId(UUID id, UUID userId);
 
-    Page<AccountProjection> findAllProjectionsByUserId(UUID userId, Pageable pageable);
+    Page<AccountProfile> findAllProjectionsByUserId(UUID userId, Pageable pageable);
 
 }

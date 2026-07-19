@@ -68,8 +68,10 @@ monoteBe
 1. Clone or download the repository.
 2. Open the project in **IntelliJ IDEA**.
 3. Wait for Gradle to automatically download dependencies.
-4. Start **Docker Engine**.
-5. Run the `MonoteBeApplication` class.
+4. Read the instruction in `application.example.yaml` to create your `application.yaml`.
+5. Read the instruction in `compose.example.yaml` to create your `compose.yaml`.
+6. Start **Docker Engine**.
+7. Run the `MonoteBeApplication` class.
 
 *If the **Run terminal** logs the below log, you are all set.*
 ```
@@ -77,4 +79,4 @@ monoteBe
 || Monote BE started successfully ||
 ||================================||
 ```
-6. **Monote Server Application** is now running at: `http://localhost:8080/`.
+8. **Monote Server Application** is now running at: `http://localhost:8080/`.

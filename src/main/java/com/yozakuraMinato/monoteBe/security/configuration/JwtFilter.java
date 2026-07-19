@@ -23,12 +23,12 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
 
-    @Value("${security.auth-header.label}")
-    private String authLabel;
-    @Value("${security.auth-header.start-index}")
-    private int startIndex;
-    @Value("${security.auth-header.start-text}")
-    private String startText;
+    @Value("${security.authentication.label}")
+    private String AUTHENTICATION_LABEL;
+    @Value("${security.authentication.prefix}")
+    private String AUTHENTICATION_PREFIX;
+    @Value("${security.authentication.token-index}")
+    private int TOKEN_INDEX;
 
     private final JwtApiService jwtApiService;
     private final ApplicationContext applicationContext;
@@ -38,12 +38,12 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(
             HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain
     ) throws ServletException, IOException {
-        String authHeader = httpServletRequest.getHeader(authLabel);
+        String authHeader = httpServletRequest.getHeader(AUTHENTICATION_LABEL);
         String token = null;
         String email = null;
 
-        if (authHeader != null && authHeader.startsWith(startText)) {
-            token = authHeader.substring(startIndex);
+        if (authHeader != null && authHeader.startsWith(AUTHENTICATION_PREFIX)) {
+            token = authHeader.substring(TOKEN_INDEX);
             email = jwtApiService.extractUsername(token);
         }
 

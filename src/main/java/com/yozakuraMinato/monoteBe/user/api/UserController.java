@@ -29,13 +29,16 @@ public class UserController {
     }
 
     @PostMapping("/sign-in")
-    public ResponseEntity<ApiResponse<AuthenticationResponse>> signIn(@RequestBody @Valid SignInRequest signInRequest) {
+    public ResponseEntity<ApiResponse<AuthenticationResponse>> signIn(@RequestBody @Valid SignInRequest signInRequest
+    ) {
         AuthenticationResponse authenticationResponse = userApiService.signIn(signInRequest);
         return ResponseEntity.ok(ApiResponse.data(authenticationResponse));
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<ApiResponse<AuthenticationResponse>> refresh(@RequestBody @Valid RefreshTokenRequest refreshTokenRequest) {
+    public ResponseEntity<ApiResponse<AuthenticationResponse>> refresh(
+            @RequestBody @Valid RefreshTokenRequest refreshTokenRequest
+    ) {
         AuthenticationResponse authenticationResponse = userApiService.refresh(refreshTokenRequest);
         return ResponseEntity.ok(ApiResponse.data(authenticationResponse));
     }

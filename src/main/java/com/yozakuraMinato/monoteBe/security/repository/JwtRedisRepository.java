@@ -1,37 +1,34 @@
-package com.yozakuraMinato.monoteBe.security.service.implement;
+package com.yozakuraMinato.monoteBe.security.repository;
 
-import com.yozakuraMinato.monoteBe.security.service.JwtRedisApiService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import java.time.Duration;
 
-@Service
+@Repository
 @RequiredArgsConstructor
-public class JwtRedisServiceImplement implements JwtRedisApiService {
+public class JwtRedisRepository {
 
-    private static final String REFRESH_TOKEN_PREFIX = "jwt:refresh:";
-    @Value("${security.jwt.refresh-token-expiration}")
-    private long refreshTokenExpiration;
+    @Value("${security.jwt.refresh-token.expiration}")
+    private long REFRESH_TOKEN_EXPIRATION;
+    @Value("${security.jwt.refresh-token.prefix}")
+    private String REFRESH_TOKEN_PREFIX;
 
     private final StringRedisTemplate stringRedisTemplate;
 
-    @Override
     public void saveRefreshToken(String userIdString, String jtiString) {
         String key = REFRESH_TOKEN_PREFIX + userIdString;
-        stringRedisTemplate.opsForValue().set(key, jtiString, Duration.ofMillis(refreshTokenExpiration));
+        stringRedisTemplate.opsForValue().set(key, jtiString, Duration.ofMillis(REFRESH_TOKEN_EXPIRATION));
     }
 
-    @Override
     public boolean isRefreshTokenExists(String userIdString, String jtiString) {
         String key = REFRESH_TOKEN_PREFIX + userIdString;
         String existsJitString = stringRedisTemplate.opsForValue().get(key);
         return jtiString.equals(existsJitString);
     }
 
-    @Override
     public void deleteRefreshToken(String userIdString) {
         String key = REFRESH_TOKEN_PREFIX + userIdString;
         stringRedisTemplate.delete(key);

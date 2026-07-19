@@ -8,7 +8,7 @@ import lombok.Getter;
 public enum AccountStatus {
 
     INACTIVE("INACTIVE"),
-    ACTIVATE("ACTIVE");
+    ACTIVE("ACTIVE");
 
     private final String description;
 
